@@ -1,18 +1,10 @@
-#include <gl_core_4_4.h>
-#include <glfw3.h>
-#include <stdio.h>
-#include <Gizmos.h>
-#include <glm/glm/glm.hpp>
-#include <glm/glm/ext.hpp>
-#include "Application.h"
+#include "IntroApplication.h"
 
 int main()
 {
-	Application* App = new Application();
-	while (true)
-		App->run("game",720,720,false);
-	delete App;
-	return 0;
+	auto App = new IntroApplication();
+	App->run("title", 720, 720, false);
+	
 	//if (glfwInit() == false)
 	//	return -1;
 	//GLFWwindow* window = glfwCreateWindow(1280, 720,
@@ -30,19 +22,21 @@ int main()
 	//	return -3;
 	//}
 	//Gizmos::create();
-	//glm::mat4 view = glm::lookAt(glm::vec3(10, 10, 10), glm::vec3(0), glm::vec3(0, 1, 0));
-	//glm::mat4 projection = glm::perspective(glm::pi<float>() * 0.25f,
-	//	16 / 9.f, 0.1f, 1000.f);
-
 	//auto major = ogl_GetMajorVersion();
 	//auto minor = ogl_GetMinorVersion();
 	//printf("GL: %i.%i\n", major, minor);
+	//glm::mat4 model = glm::mat4(1);//model
+	//glm::mat4 model2 = glm::translate(model, glm::vec3(25, 20, 0));
+	//glm::mat4 view = glm::lookAt(glm::vec3(10, 10, 25), glm::vec3(0), glm::vec3(0, 1, 0));//view
+	//glm::mat4 projection = glm::perspective(glm::pi<float>() * 0.25f, 16 / 9.f, 0.1f, 1000.f);//projection
 	//glClearColor(0.25f, 0.25f, 0.25f, 1);
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//while (glfwWindowShouldClose(window) == false && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS) 
 	//{
 	//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//	Gizmos::clear();
+	//	Gizmos::addSphere(glm::vec3(0, 0, 0), 5, 25, 25, glm::vec4(.5, .25, .25, 1), &model);
+	//	Gizmos::draw(projection * view);
 	//	Gizmos::addTransform(glm::mat4(1));
 	//	glm::vec4 white(1);
 	//	glm::vec4 black(0, 0, 0, 1);
@@ -57,7 +51,6 @@ int main()
 	//	Gizmos::draw(projection * view);
 	//	glfwSwapBuffers(window);
 	//	glfwPollEvents();
-
 	//}
 	//Gizmos::destroy();
 	//glfwDestroyWindow(window);

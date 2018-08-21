@@ -1,7 +1,14 @@
 #pragma once
+#include <gl_core_4_4.h>
+#include <glfw3.h>
+#include <Gizmos.h>
+#include <glm/glm/glm.hpp>
+#include <glm/glm/ext.hpp>
+#include "stdio.h"
+struct GLFWwindow;
 class Application
 {
-	struct GLFWwindow;
+	
 public:
 	Application();
 	virtual ~Application();
