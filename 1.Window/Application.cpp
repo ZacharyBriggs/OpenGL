@@ -13,7 +13,6 @@ void Application::run(const char * title, unsigned int width, unsigned int heigh
 	ogl_LoadFunctions();
 	auto major = ogl_GetMajorVersion();
 	auto minor = ogl_GetMinorVersion();
-	printf("GL: %i.%i\n", major, minor);
 
 	glClearColor(0.25f, 0.25f, 0.25f, 1);
 	glEnable(GL_DEPTH_TEST);

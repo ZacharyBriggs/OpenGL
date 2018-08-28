@@ -23,6 +23,7 @@ void IntroApplication::shutdown()
 
 void IntroApplication::update(float dt)
 {
+	model[1].z += cos(.1);
 }
 
 void IntroApplication::draw()
@@ -40,7 +41,6 @@ void IntroApplication::draw()
 			i == 10 ? white : black);
 	}
 	Gizmos::addSphere(glm::vec3(0, 0, 0), 5, 15, 10, glm::vec4(1, 1, 1, 1), &model);
-	Gizmos::addSphere(glm::vec3(0, 0, 0), 5, 10, 10, glm::vec4(.5, .25, .25, 1), &model);
 	Gizmos::draw(projection * view);
 
 }

@@ -7,7 +7,7 @@ Transform::Transform()
 	m_model = glm::mat4(1);
 	m_worldPosition = m_model[3];
 	m_localPosition = m_model[3];
-	for (int col = 0; col < 3; col++) 
+	for (int col = 0; col < 3; col++)
 	{
 		m_worldRotation[col] = m_model[col].xyz;
 		m_localRotation[col] = m_model[col].xyz;
@@ -42,22 +42,23 @@ glm::mat4 Transform::Rotate(float radians, glm::vec3 axis)
 		m_model[2].y = -sin(radians);
 		m_model[2].z = cosine;
 	}
-	////if y rotate
-	//if (axis == glm::vec3(0, 1, 0))
-	//{
-	//	m_model[0].x = cosine;
-	//	m_model[0].z = -sin(radians);
-	//	m_model[2].x = sine;
-	//	m_model[2].z = cosine;
-	//}
-	////if z rotate
-	//if (axis == glm::vec3(0, 0, 1))
-	//{
-	//	m_model[0].x = cosine;
-	//	m_model[0].y = -sin(radians);
-	//	m_model[1].x = sine;
-	//	m_model[1].y = cosine;
-	//}
+	//if y rotate
+	if (axis == glm::vec3(0, 1, 0))
+	{
+		m_model[0].x = cosine;
+		m_model[0].z = -sin(radians);
+		m_model[2].x = sine;
+		m_model[2].z = cosine;
+	}
+	//if z rotate
+	if (axis == glm::vec3(0, 0, 1))
+	{
+		m_model[0].x = cosine;
+		m_model[0].y = -sin(radians);
+		m_model[1].x = sine;
+		m_model[1].y = cosine;
+	}
+	return m_model;
 }
 
 glm::mat4 Transform::Scale(float size)

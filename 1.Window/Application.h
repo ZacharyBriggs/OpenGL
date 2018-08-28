@@ -4,7 +4,7 @@
 #include <Gizmos.h>
 #include <glm/glm/glm.hpp>
 #include <glm/glm/ext.hpp>
-#include "stdio.h"
+
 struct GLFWwindow;
 class Application
 {
