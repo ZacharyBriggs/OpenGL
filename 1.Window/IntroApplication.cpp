@@ -12,6 +12,7 @@ IntroApplication::~IntroApplication()
 void IntroApplication::startup()
 {
 	Gizmos::create();
+	trans->SetModel(glm::mat4(1));
 }
 
 void IntroApplication::shutdown()
@@ -23,7 +24,7 @@ void IntroApplication::shutdown()
 
 void IntroApplication::update(float dt)
 {
-	model[1].z += cos(.1);
+	trans->Rotate(dt, glm::vec3(1, 0, 0));
 }
 
 void IntroApplication::draw()
@@ -40,7 +41,7 @@ void IntroApplication::draw()
 			glm::vec3(-10, 0, -10 + i),
 			i == 10 ? white : black);
 	}
-	Gizmos::addSphere(glm::vec3(0, 0, 0), 5, 15, 10, glm::vec4(1, 1, 1, 1), &model);
+	Gizmos::addSphere(glm::vec3(0, 0, 0), 5, 15, 10, glm::vec4(1, 0, 0, 1), &trans->GetModel());
 	Gizmos::draw(projection * view);
 
 }

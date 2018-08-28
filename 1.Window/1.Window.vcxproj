@@ -123,6 +123,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="FlyCamera.cpp" />
     <ClCompile Include="IntroApplication.cpp" />
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="gl_core_4_4.c" />
@@ -131,6 +133,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="FlyCamera.h" />
     <ClInclude Include="IntroApplication.h" />
     <ClInclude Include="Gizmos.h" />
     <ClInclude Include="gl_core_4_4.h" />

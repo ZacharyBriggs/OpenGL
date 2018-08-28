@@ -33,31 +33,34 @@ glm::mat4 Transform::Rotate(float radians, glm::vec3 axis)
 {
 	auto cosine = cos(radians);
 	auto sine = sin(radians);
+	auto newMat = glm::mat4(1);
 	//if x rotate
 	if (axis == glm::vec3(1, 0, 0))
 	{
 		//rotating along x means x doesnt change
-		m_model[1].y = cosine;
-		m_model[1].z = sine;
-		m_model[2].y = -sin(radians);
-		m_model[2].z = cosine;
+		newMat[1].y = cosine;
+		newMat[1].z = sine;
+		newMat[2].y = -sin(radians);
+		newMat[2].z = cosine;
+
 	}
 	//if y rotate
 	if (axis == glm::vec3(0, 1, 0))
 	{
-		m_model[0].x = cosine;
-		m_model[0].z = -sin(radians);
-		m_model[2].x = sine;
-		m_model[2].z = cosine;
+		newMat[0].x = cosine;
+		newMat[0].z = -sin(radians);
+		newMat[2].x = sine;
+		newMat[2].z = cosine;
 	}
 	//if z rotate
 	if (axis == glm::vec3(0, 0, 1))
 	{
-		m_model[0].x = cosine;
-		m_model[0].y = -sin(radians);
-		m_model[1].x = sine;
-		m_model[1].y = cosine;
+		newMat[0].x = cosine;
+		newMat[0].y = -sin(radians);
+		newMat[1].x = sine;
+		newMat[1].y = cosine;
 	}
+	m_model = newMat * m_model;
 	return m_model;
 }
 
@@ -68,5 +71,15 @@ glm::mat4 Transform::Scale(float size)
 	scale[1].y = size;
 	scale[2].z = size;
 	m_model *= scale;
+	return m_model;
+}
+
+void Transform::SetModel(glm::mat4 newModel)
+{
+	m_model = newModel;
+}
+
+glm::mat4 Transform::GetModel()
+{
 	return m_model;
 }
