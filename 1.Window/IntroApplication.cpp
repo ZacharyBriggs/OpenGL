@@ -24,7 +24,7 @@ void IntroApplication::shutdown()
 
 void IntroApplication::update(float dt)
 {
-	trans->Rotate(dt, glm::vec3(1, 0, 0));
+	trans->Rotate(90, glm::vec3(0, 1, 0));
 }
 
 void IntroApplication::draw()

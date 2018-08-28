@@ -61,7 +61,7 @@ glm::mat4 Transform::Rotate(float radians, glm::vec3 axis)
 		newMat[1].y = cosine;
 	}
 	m_model = newMat * m_model;
-	return m_model;
+  	return m_model;
 }
 
 glm::mat4 Transform::Scale(float size)
