@@ -1,6 +1,7 @@
 #pragma once
 #include "Transform.h"
 #include "Application.h"
+#include "FlyCamera.h"
 
 class IntroApplication : public Application
 {
@@ -11,6 +12,7 @@ public:
 	glm::mat4 projection = glm::perspective(glm::pi<float>() * 0.25f,
 		16 / 9.f, 0.1f, 1000.f);
 	Transform *trans = new Transform;
+	FlyCamera* cam = new FlyCamera;
 protected:
 	void startup() override;
 	void shutdown() override;

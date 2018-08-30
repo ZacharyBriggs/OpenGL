@@ -13,6 +13,12 @@ void IntroApplication::startup()
 {
 	Gizmos::create();
 	trans->SetModel(glm::mat4(1));
+	glm::mat4 view = glm::lookAt(glm::vec3(10, 10, 10), glm::vec3(0), glm::vec3(0, 1, 0));
+	glm::mat4 projection = glm::perspective(glm::pi<float>() * 0.25f,
+		16 / 9.f, 0.1f, 1000.f);
+	cam->setLookAt(glm::vec3(10, 10, 10), glm::vec3(0), glm::vec3(0, 1, 0));
+	cam->setPerspective(glm::pi<float>()*0.25f,16/9.0f,0.1f,1000.0f);
+	
 }
 
 void IntroApplication::shutdown()
@@ -25,6 +31,7 @@ void IntroApplication::shutdown()
 void IntroApplication::update(float dt)
 {
 	trans->Rotate(90, glm::vec3(0, 1, 0));
+	cam->update(m_window, dt);
 }
 
 void IntroApplication::draw()
@@ -42,6 +49,6 @@ void IntroApplication::draw()
 			i == 10 ? white : black);
 	}
 	Gizmos::addSphere(glm::vec3(0, 0, 0), 5, 15, 10, glm::vec4(1, 0, 0, 1), &trans->GetModel());
-	Gizmos::draw(projection * view);
+	Gizmos::draw(cam->getWorldTransform() * cam->getProjection() * cam->getView());
 
 }
