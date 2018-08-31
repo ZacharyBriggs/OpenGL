@@ -20,5 +20,6 @@ private:
 	glm::mat4 projectionTransform;
 	glm::mat4 projectionViewTransform;
 	void updateProjectionViewTransform();
+	void Camera::setProjectionMatrix(glm::mat4 orthographic, float fieldOfView, float aspectRatio, float near, float far);
 };
 

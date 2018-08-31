@@ -52,6 +52,6 @@ void IntroApplication::draw()
 	glm::mat4 a = cam->getWorldTransform();
 	glm::mat4 b = cam->getView();
 	glm::mat4 c = cam->getProjection();
-	Gizmos::draw(cam->getWorldTransform() * cam->getProjection() * cam->getView());
+	Gizmos::draw(cam->getProjection() * cam->getView() * cam->getWorldTransform());
 
 }

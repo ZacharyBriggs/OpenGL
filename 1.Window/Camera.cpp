@@ -60,3 +60,11 @@ void Camera::updateProjectionViewTransform()
 {
 	projectionViewTransform = viewTransform * projectionTransform;
 }
+void Camera::setProjectionMatrix(glm::mat4 orthographic, float fieldOfView, float aspectRatio, float near, float far)
+{
+	orthographic[0].x = 1 / aspectRatio * tan(fieldOfView / 2);
+	orthographic[1].y = 1 / tan(fieldOfView / 2);
+	orthographic[2].z = -((far + near) / (far - near));
+	orthographic[2].w = -1;
+	orthographic[3].z = -(2 * (far*near) / (far - near));
+}
