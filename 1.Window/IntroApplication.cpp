@@ -49,6 +49,9 @@ void IntroApplication::draw()
 			i == 10 ? white : black);
 	}
 	Gizmos::addSphere(glm::vec3(0, 0, 0), 5, 15, 10, glm::vec4(1, 0, 0, 1), &trans->GetModel());
+	glm::mat4 a = cam->getWorldTransform();
+	glm::mat4 b = cam->getView();
+	glm::mat4 c = cam->getProjection();
 	Gizmos::draw(cam->getWorldTransform() * cam->getProjection() * cam->getView());
 
 }

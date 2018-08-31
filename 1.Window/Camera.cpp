@@ -30,9 +30,9 @@ void Camera::setLookAt(glm::vec3 from, glm::vec3 to, glm::vec3 up)
 
 void Camera::setPosition(glm::vec3 position)
 {
-	worldTransform[2].x += position[0];
-	worldTransform[2].y += position[1];
-	worldTransform[2].z += position[2];
+	worldTransform[3].x += position[0];
+	worldTransform[3].y += position[1];
+	worldTransform[3].z += position[2];
 	std::cout << worldTransform[2].x << " , "<< worldTransform[2].y << " , " << worldTransform[2].z << std::endl;
 }
 
