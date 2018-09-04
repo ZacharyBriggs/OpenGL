@@ -13,13 +13,16 @@ public:
 	glm::mat4 getWorldTransform();
 	glm::mat4 getView();
 	glm::mat4 getProjection();
+	void setProjection(glm::mat4 matrix);
 	glm::mat4 getProjectionView();
+	void setOrthographicView(float right, float left, float top, float bottom, float far, float near);
+	void setPerspectiveView(float fieldOfView, float aspectRatio, float near, float far);
 private:
 	glm::mat4 worldTransform;
 	glm::mat4 viewTransform;
 	glm::mat4 projectionTransform;
 	glm::mat4 projectionViewTransform;
 	void updateProjectionViewTransform();
-	void Camera::setProjectionMatrix(glm::mat4 orthographic, float fieldOfView, float aspectRatio, float near, float far);
+	
 };
 

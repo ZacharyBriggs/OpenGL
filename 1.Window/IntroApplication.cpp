@@ -12,13 +12,10 @@ IntroApplication::~IntroApplication()
 void IntroApplication::startup()
 {
 	Gizmos::create();
+	cam->setProjection(glm::mat4(1));
 	trans->SetModel(glm::mat4(1));
-	glm::mat4 view = glm::lookAt(glm::vec3(10, 10, 10), glm::vec3(0), glm::vec3(0, 1, 0));
-	glm::mat4 projection = glm::perspective(glm::pi<float>() * 0.25f,
-		16 / 9.f, 0.1f, 1000.f);
-	cam->setLookAt(glm::vec3(10, 10, 10), glm::vec3(0), glm::vec3(0, 1, 0));
-	cam->setPerspective(glm::pi<float>()*0.25f,16/9.0f,0.1f,1000.0f);
-	
+	cam->setOrthographicView(1,-1,1,-1,1,-1);
+	//cam->setPerspectiveView(0.25,1920/1080.0f,0.1f,1000.0f);
 }
 
 void IntroApplication::shutdown()

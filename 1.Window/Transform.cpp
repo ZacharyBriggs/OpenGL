@@ -37,7 +37,7 @@ glm::mat4 Transform::Rotate(float radians, glm::vec3 axis)
 	//if x rotate
 	if (axis == glm::vec3(1, 0, 0))
 	{
-		//rotating along x means x doesnt change
+		//rotating along x means x doesn't change
 		newMat[1].y = cosine;
 		newMat[1].z = sine;
 		newMat[2].y = -sin(radians);

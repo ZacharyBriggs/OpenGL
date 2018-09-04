@@ -2,6 +2,7 @@
 #include <glm/glm/gtc/matrix_transform.inl>
 #include <glm/glm/gtc/constants.inl>
 #include <iostream>
+#include <assert.h>
 
 
 Camera::Camera()
@@ -51,20 +52,40 @@ glm::mat4 Camera::getProjection()
 	return projectionTransform;
 }
 
+void Camera::setProjection(glm::mat4 matrix)
+{
+	projectionTransform = matrix;
+}
+
 glm::mat4 Camera::getProjectionView()
 {
 	return projectionViewTransform;
 }
 
+void Camera::setOrthographicView(float right, float left, float top, float bottom, float far, float near)
+{
+	auto glm = glm::ortho(left, right, bottom, top, near, far);
+	projectionTransform[0].x = 2 / right - left;
+	projectionTransform[1].y = 2 / top - bottom;
+	projectionTransform[2].z = -2 / far - near;
+	projectionTransform[3].x = -(right + left / right - left);
+	projectionTransform[3].y = -(top + bottom / top - bottom);
+	projectionTransform[3].z = -(far + near / far - near);
+	assert(glm == projectionTransform);
+}
+
 void Camera::updateProjectionViewTransform()
 {
-	projectionViewTransform = viewTransform * projectionTransform;
+	projectionViewTransform =  projectionTransform * viewTransform;
 }
-void Camera::setProjectionMatrix(glm::mat4 orthographic, float fieldOfView, float aspectRatio, float near, float far)
+void Camera::setPerspectiveView(float fieldOfView, float aspectRatio, float near, float far)
 {
-	orthographic[0].x = 1 / aspectRatio * tan(fieldOfView / 2);
-	orthographic[1].y = 1 / tan(fieldOfView / 2);
-	orthographic[2].z = -((far + near) / (far - near));
-	orthographic[2].w = -1;
-	orthographic[3].z = -(2 * (far*near) / (far - near));
+	float fov = glm::pi<float>()*fieldOfView;
+	auto glm = glm::perspective(fov, aspectRatio, near, far);
+	projectionTransform[0].x = 1 / (aspectRatio * tan(fov / 2));
+	projectionTransform[1].y = 1 / tan(fov / 2);
+	projectionTransform[2].z = -((far + near) / (far - near));
+	projectionTransform[2].w = -1;
+	projectionTransform[3].z = -((2 *far*near) / (far - near));
+	assert(projectionTransform == glm);
 }
