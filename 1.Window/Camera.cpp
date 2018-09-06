@@ -7,6 +7,7 @@
 
 Camera::Camera()
 {
+	projectionTransform = glm::mat4(1);
 	worldTransform = glm::mat4(1);
 }
 
@@ -34,7 +35,7 @@ void Camera::setPosition(glm::vec3 position)
 	worldTransform[3].x += position[0];
 	worldTransform[3].y += position[1];
 	worldTransform[3].z += position[2];
-	std::cout << worldTransform[2].x << " , "<< worldTransform[2].y << " , " << worldTransform[2].z << std::endl;
+	std::cout << worldTransform[3].x << " , "<< worldTransform[3].y << " , " << worldTransform[3].z << std::endl;
 }
 
 glm::mat4 Camera::getWorldTransform()
@@ -65,13 +66,13 @@ glm::mat4 Camera::getProjectionView()
 void Camera::setOrthographicView(float right, float left, float top, float bottom, float far, float near)
 {
 	auto glm = glm::ortho(left, right, bottom, top, near, far);
-	projectionTransform[0].x = 2 / right - left;
-	projectionTransform[1].y = 2 / top - bottom;
-	projectionTransform[2].z = -2 / far - near;
-	projectionTransform[3].x = -(right + left / right - left);
-	projectionTransform[3].y = -(top + bottom / top - bottom);
-	projectionTransform[3].z = -(far + near / far - near);
-	assert(glm == projectionTransform);
+	projectionTransform[0].x = 2 / (right - left);
+	projectionTransform[1].y = 2 / (top - bottom);
+	projectionTransform[2].z = -2 / (far - near);
+	projectionTransform[3].x = -((right + left) / (right - left));
+	projectionTransform[3].y = -((top + bottom) / (top - bottom));
+	projectionTransform[3].z = -((far + near) / (far - near));
+	//assert(glm == projectionTransform);
 }
 
 void Camera::updateProjectionViewTransform()

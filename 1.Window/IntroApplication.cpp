@@ -1,5 +1,6 @@
 #include "IntroApplication.h"
 #include <utility>
+#include "Gizmos.h"
 
 IntroApplication::IntroApplication()
 {
@@ -12,10 +13,9 @@ IntroApplication::~IntroApplication()
 void IntroApplication::startup()
 {
 	Gizmos::create();
-	cam->setProjection(glm::mat4(1));
 	trans->SetModel(glm::mat4(1));
-	cam->setOrthographicView(1,-1,1,-1,1,-1);
-	//cam->setPerspectiveView(0.25,1920/1080.0f,0.1f,1000.0f);
+	//cam->setOrthographicView(10,-10,10,-10,10,-10);
+	cam->setPerspectiveView(90,1920/1080.0f,0.1f,1000.0f);
 }
 
 void IntroApplication::shutdown()
