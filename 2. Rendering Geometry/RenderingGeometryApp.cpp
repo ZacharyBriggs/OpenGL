@@ -16,18 +16,19 @@ RenderingGeometryApp::~RenderingGeometryApp()
 
 void RenderingGeometryApp::startup()
 {
-	Vertex* a = new Vertex (glm::vec4(-10,10,0,1),glm::vec4(1,0,0,1));
-	Vertex* b = new Vertex (glm::vec4(10,10,0,1),glm::vec4(0, 1, 0, 1));
-	Vertex* c = new Vertex (glm::vec4(10,-10,0,1), glm::vec4(0, 0, 1, 1));
-	Vertex* d = new Vertex (glm::vec4(-10,-10,0,1), glm::vec4(0, 0, 0, 1));
-	m_vertices = { *a, *b, *c, *d };
+	Vertex a = Vertex (glm::vec4(-10,10,0,1),glm::vec4(1,0,0,1));
+	Vertex b = Vertex (glm::vec4(10,10,0,1),glm::vec4(0, 1, 0, 1));
+	Vertex c = Vertex (glm::vec4(10,-10,0,1), glm::vec4(0, 0, 1, 1));
+	Vertex d = Vertex (glm::vec4(-10,-10,0,1), glm::vec4(0, 0, 0, 1));
+	m_vertices = { a,b,c,d };
 	m_indices = { 0 ,1,2,2,3,0};
+	create_buffers();
 }
 
 void RenderingGeometryApp::update(float dt)
 {
 	m_model = glm::mat4(1);
-	glm::vec3 eye = glm::vec3(0, -10, -10);
+	glm::vec3 eye = glm::vec3(0, -10, -20);
 	m_view = glm::lookAt(eye, m_model[3].xyz(), glm::vec3(0, 1, 0));
 	m_projection = glm::perspective(glm::quarter_pi<float>(), 800 / (float)600, 0.1f, 1000.f);
 
@@ -40,7 +41,7 @@ void RenderingGeometryApp::draw()
 	glm::mat4 mvp = m_projection * m_view*m_model;
 	glUniformMatrix4fv(variableId, 1, GL_FALSE, &mvp[0][0]);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glDrawElements(GL_TRIANGLES,m_indices.size(),GL_UNSIGNED_INT,0);
+	glDrawElements(GL_TRIANGLE_STRIP ,m_indices.size(),GL_UNSIGNED_INT,0);
 
 	glUseProgram(0);
 	glBindVertexArray(0);
@@ -84,7 +85,7 @@ void RenderingGeometryApp::create_buffers()
 	const char *fsSource = "#version 410\n \
                             in vec4 vColor; \
                             out vec4 FragColor; \
-                            void main() { FragColor = vec4(.25, .25, .25, 0); }";
+                            void main() { FragColor = vColor; }";
 	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(vertexShader,1,(const char**)&vsSource,0);
