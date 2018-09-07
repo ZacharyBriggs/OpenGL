@@ -8,6 +8,7 @@ public:
 	MeshRenderer();
 	~MeshRenderer();
 	int initialize(std::vector<unsigned int>& indicies, std::vector<Vertex>& verticies);
+	int render();
 	int render(glm::mat4 m_projection, glm::mat4 m_view, glm::mat4 m_model);
 	
 private:
@@ -16,7 +17,6 @@ private:
 	unsigned int m_ibo;
 	unsigned int m_vbo;
 	unsigned int m_vao;
-	unsigned int m_program;
 	int create_buffers();
 };
 
