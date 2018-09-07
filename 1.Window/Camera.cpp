@@ -88,5 +88,5 @@ void Camera::setPerspectiveView(float fieldOfView, float aspectRatio, float near
 	projectionTransform[2].z = -((far + near) / (far - near));
 	projectionTransform[2].w = -1;
 	projectionTransform[3].z = -((2 *far*near) / (far - near));
-	assert(projectionTransform == glm);
+	//assert(projectionTransform == glm);
 }

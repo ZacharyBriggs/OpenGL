@@ -6,12 +6,6 @@ Vertex::Vertex()
 {
 }
 
-Vertex::Vertex(glm::vec4 pos)
-{
-	position = pos;
-	color = pos;
-}
-
 Vertex::Vertex(glm::vec4 pos, glm::vec4 clr)
 {
 	position = pos;
