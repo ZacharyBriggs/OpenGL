@@ -32,20 +32,7 @@ int MeshRenderer::render()
 	glBindVertexArray(0);
 	return 0;
 }
-int MeshRenderer::render(glm::mat4 m_projection, glm::mat4 m_view, glm::mat4 m_model)
-{
-	/*glUseProgram(m_program);
-	glBindVertexArray(m_vao);
-	int variableId = glGetUniformLocation(m_program, "ProjectionViewWorld");
-	glm::mat4 mvp = m_projection * m_view * m_model;
-	glUniformMatrix4fv(variableId, 1, GL_FALSE, &mvp[0][0]);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glDrawElements(GL_TRIANGLE_STRIP, m_indices.size(), GL_UNSIGNED_INT, 0);
 
-	glUseProgram(0);
-	glBindVertexArray(0);*/
-	return 0;
-}
 
 int MeshRenderer::create_buffers()
 {

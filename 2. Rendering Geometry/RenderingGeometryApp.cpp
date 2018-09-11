@@ -52,7 +52,7 @@ void RenderingGeometryApp::update(float dt)
 	glm::vec3 eye = glm::vec3(0, -10, -50);
 	m_view = glm::lookAt(eye, m_model[3].xyz(), glm::vec3(0, 1, 0));
 	m_projection = glm::perspective(glm::quarter_pi<float>(), 800 / (float)600, 0.1f, 1000.f);
-
+ 
 }
 void RenderingGeometryApp::draw()
 {
