@@ -5,6 +5,10 @@
 #include "Application.h"
 #include "Shader.h"
 #include "RenderingGeometryApp.h"
+#include <glm/glm/glm.hpp>
+#include <glm/glm/fwd.hpp>
+#include <glm/glm/ext.hpp>
+#include "gl_core_4_4.h"
 
 
 RenderingGeometryApp::RenderingGeometryApp()

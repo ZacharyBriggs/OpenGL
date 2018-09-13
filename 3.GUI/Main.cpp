@@ -2,6 +2,6 @@
 
 int main()
 {
-	Application* app = new GUIApplication;
-	app->run("tittle",600,800,false);
+	Application* app = new GUIApplication();
+	app->run("bob", 800, 600, false);
 }
