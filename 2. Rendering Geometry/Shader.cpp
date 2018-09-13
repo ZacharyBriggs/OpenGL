@@ -1,21 +1,23 @@
+#define GLM_FORCE_SWIZZLE
 #include "Shader.h"
 #include "gl_core_4_4.h"
+#include <glm\glm\glm.hpp>
 
 Shader::Shader()
 {
-	
+	m_program = glCreateProgram();
 }
 
 Shader::~Shader()
 {
 }
 
-void Shader::Bind()
+void Shader::bind()
 {
 	glUseProgram(m_program);
 }
 
-void Shader::UnBind()
+void Shader::unbind()
 {
 	glUseProgram(0);
 }
@@ -27,7 +29,16 @@ bool Shader::load(const char * filename, unsigned int type, bool isFile)
 
 bool Shader::attach()
 {
-	return false;
+	m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(m_vertexShader, 1, (const char**)&vsSource, 0);
+	glCompileShader(m_vertexShader);
+	glShaderSource(m_fragmentShader, 1, (const char**)&fsSource, 0);
+	glCompileShader(m_fragmentShader);
+	glAttachShader(m_program, m_vertexShader);
+	glAttachShader(m_program, m_fragmentShader);
+	glLinkProgram(m_program);
+	return true;
 }
 
 void Shader::defaultLoad()
@@ -46,7 +57,7 @@ void Shader::defaultLoad()
                 void main() { FragColor = vColor; }";
 }
 
-unsigned int Shader::getUniform(const char *)
+unsigned int Shader::getUniform(const char *mvp)
 {
-	return 0;
+	return glGetUniformLocation(m_program, mvp);;
 }

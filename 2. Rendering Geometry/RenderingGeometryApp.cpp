@@ -1,5 +1,9 @@
 #define GLM_FORCE_SWIZZLE
-
+#include "MeshRenderer.h"
+#include "Vertex.h"
+#include <vector>
+#include "Application.h"
+#include "Shader.h"
 #include "RenderingGeometryApp.h"
 
 
@@ -15,6 +19,7 @@ RenderingGeometryApp::~RenderingGeometryApp()
 void RenderingGeometryApp::startup()
 {
 	mesh = new MeshRenderer();
+	defaultShader = new Shader();
 	Vertex a = Vertex(glm::vec4(-10, 10, 0, 1), glm::vec4(1, 0, 0, 1));
 	Vertex b = Vertex(glm::vec4(10, 10, 0, 1), glm::vec4(0, 1, 0, 1));
 	Vertex c = Vertex(glm::vec4(10, -10, 0, 1), glm::vec4(0, 0, 1, 1));
@@ -22,28 +27,8 @@ void RenderingGeometryApp::startup()
 	std::vector<Vertex> vertices = { a,b,c,d };
 	std::vector<unsigned int> indices = { 0 ,1,2,2,3,0 };
 	mesh->initialize(indices, vertices);
-	const char*	vsSource = "#version 410\n \
-                            layout(location = 0) in vec4 Position; \
-                            layout(location = 1) in vec4 Color; \
-                            out vec4 vColor; \
-                            uniform mat4 ProjectionViewWorld; \
-                            void main() { vColor = Color; \
-                            gl_Position = ProjectionViewWorld * Position; }";
-
-	const char *fsSource = "#version 410\n \
-                            in vec4 vColor; \
-                            out vec4 FragColor; \
-                            void main() { FragColor = vColor; }";
-	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(vertexShader, 1, (const char**)&vsSource, 0);
-	glCompileShader(vertexShader);
-	glShaderSource(fragmentShader, 1, (const char**)&fsSource, 0);
-	glCompileShader(fragmentShader);
-	m_program = glCreateProgram();
-	glAttachShader(m_program, vertexShader);
-	glAttachShader(m_program, fragmentShader);
-	glLinkProgram(m_program);
+	defaultShader->defaultLoad();
+	defaultShader->attach();
 }
 
 void RenderingGeometryApp::update(float dt)
@@ -56,14 +41,12 @@ void RenderingGeometryApp::update(float dt)
 }
 void RenderingGeometryApp::draw()
 {
-	glUseProgram(m_program);
-	int handle = glGetUniformLocation(m_program,"ProjectionViewWorld");
+	defaultShader->bind();
+	int handle = defaultShader->getUniform("ProjectionViewWorld");
 	glm::mat4 mvp = m_projection*m_view*m_model;
 	glUniformMatrix4fv(handle, 1, GL_FALSE, &mvp[0][0]);
 	mesh->render();
-	glUseProgram(0);
-	/*glUseProgram(m_program);
-	mvp = m_projection * m_view * m_model*glm::translate(m_model,glm::vec3(5,0,0));*/
+	defaultShader->unbind();
 }
 
 void RenderingGeometryApp::shutdown()

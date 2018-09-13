@@ -1,18 +1,16 @@
-#include <glm\glm\glm.hpp>
-#include "gl_core_4_4.h"
 #pragma once
 class Shader
 {
 public:
 	Shader();
 	~Shader();
-	void Bind();
-	void UnBind();
+	void bind();
+	void unbind();
 	bool load(const char* filename, unsigned int type, bool isFile = true);
 	bool attach();
 	void defaultLoad();
 
-	unsigned int getUniform(const char*);
+	unsigned int getUniform(const char* mvp);
 	unsigned int m_vertexShader;
 	unsigned int m_fragmentShader;
 

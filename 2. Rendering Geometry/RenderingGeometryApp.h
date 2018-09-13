@@ -1,13 +1,11 @@
 #pragma once
-#include "MeshRenderer.h"
-#include "Vertex.h"
-#include <vector>
-#include "Application.h"
+
 
 class RenderingGeometryApp : public Application
 {
 public:
 	MeshRenderer* mesh;
+	Shader* defaultShader;
 	RenderingGeometryApp();
 	~RenderingGeometryApp();
 	unsigned int m_program;
