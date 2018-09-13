@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Application.h"
+class MeshRenderer;
+class Shader;
 
 class RenderingGeometryApp : public Application
 {
