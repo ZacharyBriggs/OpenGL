@@ -28,10 +28,13 @@
     <ClInclude Include="include\imgui.h" />
     <ClInclude Include="include\imgui_impl_glfw_gl3.h" />
     <ClInclude Include="include\imgui_internal.h" />
+    <ClInclude Include="include\MeshRenderer.h" />
+    <ClInclude Include="include\Shader.h" />
     <ClInclude Include="include\stb_rect_pack.h" />
     <ClInclude Include="include\stb_textedit.h" />
     <ClInclude Include="include\stb_truetype.h" />
     <ClInclude Include="include\Transform.h" />
+    <ClInclude Include="include\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
@@ -43,7 +46,10 @@
     <ClCompile Include="src\imgui_demo.cpp" />
     <ClCompile Include="src\imgui_draw.cpp" />
     <ClCompile Include="src\imgui_impl_glfw_gl3.cpp" />
+    <ClCompile Include="src\MeshRenderer.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Transform.cpp" />
+    <ClCompile Include="src\Vertex.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
