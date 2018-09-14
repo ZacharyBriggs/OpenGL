@@ -16,8 +16,8 @@ void IntroApplication::startup()
 {
 	Gizmos::create();
 	trans->SetModel(glm::mat4(1));
-	cam->setOrthographicView(50,-50,50,-50,1000.0f,0.1f);
-	//cam->setPerspectiveView(90,1920/1080.0f,0.1f,1000.0f);
+	//cam->setOrthographicView(50,-50,50,-50,1000.0f,0.1f);
+	cam->setPerspectiveView(90,1920/1080.0f,0.1f,1000.0f);
 }
 
 void IntroApplication::shutdown()
