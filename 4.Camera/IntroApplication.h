@@ -3,6 +3,9 @@
 #include <glm/glm/glm.hpp>
 #include <glm/glm/ext.hpp>
 #include <glm/glm/fwd.hpp>
+#include "FlyCamera.h"
+#include "Transform.h"
+
 class Transform;
 class FlyCamera;
 

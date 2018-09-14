@@ -1,9 +1,9 @@
 #define GLM_FORCE_SWIZZLE
+#include "Shader.h"
 #include "MeshRenderer.h"
 #include "Vertex.h"
 #include <vector>
 #include "Application.h"
-#include "Shader.h"
 #include "RenderingGeometryApp.h"
 #include <glm/glm/glm.hpp>
 #include <glm/glm/fwd.hpp>

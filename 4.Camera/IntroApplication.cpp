@@ -1,9 +1,8 @@
 #include "IntroApplication.h"
 #include <utility>
 #include "Gizmos.h"
-#include "FlyCamera.h"
-#include "Transform.h"
 #include "glfw/glfw3.h"
+
 
 IntroApplication::IntroApplication()
 {
