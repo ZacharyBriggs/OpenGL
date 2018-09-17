@@ -23,7 +23,6 @@ void GUIApplication::startup()
 	m_mesh2->initialize(indices, vertices);
 	m_defaultShader->defaultLoad();
 	m_defaultShader->attach();
-
 }
 
 void GUIApplication::shutdown()
@@ -45,6 +44,9 @@ void GUIApplication::draw()
 	m_defaultShader->bind();
 	int handle = m_defaultShader->getUniform("ProjectionViewWorld");
 	glm::mat4 mvp = m_projection * m_view*m_transform->GetModel();
+	glUniformMatrix4fv(handle, 1, GL_FALSE, &mvp[0][0]);
+	m_mesh->render();
+	mvp = m_projection * m_view*m_transform->Translate(glm::vec3(10,0,0));
 	glUniformMatrix4fv(handle, 1, GL_FALSE, &mvp[0][0]);
 	m_mesh->render();
 	m_defaultShader->unbind();

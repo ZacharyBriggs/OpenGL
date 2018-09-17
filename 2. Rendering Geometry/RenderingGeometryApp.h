@@ -20,5 +20,5 @@ public:
 	void startup() override;
 	void update(float dt) override;
 	void draw() override;
-	void shutdown() override;	
+	void shutdown() override;
 };
