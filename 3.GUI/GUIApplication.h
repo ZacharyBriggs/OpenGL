@@ -7,7 +7,6 @@ class GUIApplication : public Application
 {
 public:
 	MeshRenderer* m_mesh;
-	MeshRenderer* m_mesh2;
 	Shader* m_defaultShader;
 	Transform* m_transform;
 	glm::mat4 m_view;
