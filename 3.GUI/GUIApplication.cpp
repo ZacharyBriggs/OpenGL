@@ -19,8 +19,11 @@ void GUIApplication::startup()
 	std::vector<unsigned int> indices = { 0 ,1,2,2,3,0 };
 	m_transform->SetModel(glm::mat4(1));
 	m_mesh->initialize(indices, vertices);
+	m_defaultShader->load("d.dik", 0);
+	m_defaultShader->load("b.buts", 1);
 	m_defaultShader->defaultLoad();
 	m_defaultShader->attach();
+	m_defaultShader->defaultLoad();
 }
 
 void GUIApplication::shutdown()
@@ -37,9 +40,8 @@ void GUIApplication::update(float dt)
 
 void GUIApplication::draw()
 {
-	ImGui::SliderInt3("position", pos, -10, 10);
-	if (ImGui::Button("Translate"))
-		m_transform->Translate(glm::vec3(pos[0], pos[1], pos[2]));
+	ImGui::SliderInt3("position", pos, -20, 20);
+	translation = glm::translate(translation,glm::vec3(pos[0], pos[1], pos[2]));
 	m_defaultShader->bind();
 	int handle = m_defaultShader->getUniform("ProjectionViewWorld");
 	int yPos = 70;
@@ -49,7 +51,7 @@ void GUIApplication::draw()
 		glm::mat4 mat = glm::mat4(1);
 		mat = glm::translate(mat,glm::vec3(-100, 0, 0));
 		mat = glm::translate(mat, glm::vec3(20  * xMultiple, yPos, 0));
-		glm::mat4 mvp = m_projection * m_view* mat;
+		glm::mat4 mvp = m_projection * m_view* mat * translation;
 		glUniformMatrix4fv(handle, 1, GL_FALSE, &mvp[0][0]);
 		m_mesh->render();
 		xMultiple++;

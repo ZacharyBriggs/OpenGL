@@ -2,6 +2,7 @@
 #include "Shader.h"
 #include "gl_core_4_4.h"
 #include <glm\glm\glm.hpp>
+#include <stdio.h>
 
 Shader::Shader()
 {
@@ -24,6 +25,12 @@ void Shader::unbind()
 
 bool Shader::load(const char * filename, unsigned int type, bool isFile)
 {
+	FILE* file;
+	file = fopen_s(filename,"r");
+	if(type == 0)
+		fscanf_s(file,"%s",vsSource);
+	if(type == 1)
+		fscanf_s(file, "%s", fsSource);
 	return false;
 }
 

@@ -11,6 +11,7 @@ public:
 	Transform* m_transform;
 	glm::mat4 m_view;
 	glm::mat4 m_projection;
+	glm::mat4 translation = glm::mat4(1);
 	// Inherited via Application
 	virtual void startup() override;
 	virtual void shutdown() override;
