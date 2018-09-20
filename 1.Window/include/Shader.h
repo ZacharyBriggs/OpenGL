@@ -1,7 +1,5 @@
-#include <cstdio>
-#include "gl_core_4_4.h"
-#include <iostream>
 #pragma once
+#include <iostream>
 class Shader
 {
 public:

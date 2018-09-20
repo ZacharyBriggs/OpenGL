@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "glm/glm/glm.hpp"
 #include "glm/glm/fwd.hpp"
+#include <vector>
 
 class MeshRenderer;
 class Shader;
@@ -21,4 +22,6 @@ public:
 	void update(float dt) override;
 	void draw() override;
 	void shutdown() override;
+	std::vector<glm::vec4> genHalfCircle(int numPoints, int radius);
+	std::vector<glm::vec4> genSphere(std::vector<glm::vec4> points, int numRotations);
 };

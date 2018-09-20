@@ -2,11 +2,8 @@
 #include "Shader.h"
 #include "MeshRenderer.h"
 #include "Vertex.h"
-#include <vector>
 #include "Application.h"
 #include "RenderingGeometryApp.h"
-#include <glm/glm/glm.hpp>
-#include <glm/glm/fwd.hpp>
 #include <glm/glm/ext.hpp>
 #include "gl_core_4_4.h"
 
@@ -34,6 +31,7 @@ void RenderingGeometryApp::startup()
 	mesh->initialize(indices, vertices);
 	defaultShader->defaultLoad();
 	defaultShader->attach();
+	genHalfCircle(3,1);
 }
 
 void RenderingGeometryApp::update(float dt)
@@ -55,5 +53,28 @@ void RenderingGeometryApp::draw()
 
 void RenderingGeometryApp::shutdown()
 {
+
 }
 
+std::vector<glm::vec4> RenderingGeometryApp::genHalfCircle(int numPoints,int radius)
+{
+	int angle = 3.14 / numPoints;
+	std::vector<glm::vec4> points;
+	int i = 0;
+	for (int theta = 0; theta < 3.14; theta += angle)
+	{
+		points.push_back(glm::vec4(cos(theta), sin(theta), 0, 1));
+		i++;
+	}
+	return points;
+}
+
+std::vector<glm::vec4> RenderingGeometryApp::genSphere(std::vector<glm::vec4> points, int numRotations)
+{
+	std::vector<glm::vec4> allPoints;   
+	for (int i = 0; i < numRotations; i++)
+	{
+		allPoints.push_back();
+	}
+	return std::vector<glm::vec4>();
+}

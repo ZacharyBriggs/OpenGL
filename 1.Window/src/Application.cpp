@@ -9,7 +9,7 @@ Application::Application() :m_window(nullptr), m_gameover(false), m_clearColor{ 
 Application::~Application()
 {
 }
-
+void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
 void Application::run(const char * title, unsigned int width, unsigned int height, bool fullscreen)
 {
 	float prevTime = glfwGetTime();
@@ -30,7 +30,11 @@ void Application::run(const char * title, unsigned int width, unsigned int heigh
 		double glfwTime = glfwGetTime();
 
 		glfwPollEvents();
-
+		//void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+		//glfwSetKeyCallback(m_window, key_callback);
+		//int state = glfwGetKey(m_window, GLFW_KEY_1);
+		//if (state == GLFW_PRESS)
+		//	printf("you done did it");
 		ImGui_ImplGlfwGL3_NewFrame();
 
 

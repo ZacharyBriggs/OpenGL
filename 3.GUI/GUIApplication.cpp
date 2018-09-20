@@ -38,8 +38,8 @@ void GUIApplication::update(float dt)
 
 void GUIApplication::draw()
 {
-	ImGui::SliderInt3("position", pos, -20, 20);
-	translation = glm::translate(translation,glm::vec3(pos[0], pos[1], pos[2]));
+	ImGui::SliderInt3("position", pos, -100, 100);
+	translation[3].xyz = glm::vec3(pos[0], pos[1], pos[2]);
 	m_defaultShader->bind();
 	int handle = m_defaultShader->getUniform("ProjectionViewWorld");
 	int yPos = 70;
@@ -49,7 +49,7 @@ void GUIApplication::draw()
 		glm::mat4 mat = glm::mat4(1);
 		mat = glm::translate(mat,glm::vec3(-100, 0, 0));
 		mat = glm::translate(mat, glm::vec3(20  * xMultiple, yPos, 0));
-		glm::mat4 mvp = m_projection * m_view* mat * translation;
+		glm::mat4 mvp = m_projection * m_view * mat * translation;
 		glUniformMatrix4fv(handle, 1, GL_FALSE, &mvp[0][0]);
 		m_mesh->render();
 		xMultiple++;

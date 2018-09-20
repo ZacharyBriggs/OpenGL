@@ -11,6 +11,7 @@ public:
 	~Transform();
 
 	glm::mat4 Translate(glm::vec3 move);
+	glm::mat4 SetPosition(glm::vec3 move);
 	glm::mat4 Rotate(float radians, glm::vec3 axis);
 	glm::mat4 Scale(float size);
 	void SetModel(glm::mat4 newModel);

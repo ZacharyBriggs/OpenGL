@@ -29,6 +29,14 @@ glm::mat4 Transform::Translate(glm::vec3 move)
 	return m_model;
 }
 
+glm::mat4 Transform::SetPosition(glm::vec3 move)
+{
+	glm::mat4 newPosition = glm::mat4(1);
+	newPosition[3].xyz = move;
+	m_model = newPosition;
+	return glm::mat4();
+}
+
 glm::mat4 Transform::Rotate(float radians, glm::vec3 axis)
 {
 	auto cosine = cos(radians);
