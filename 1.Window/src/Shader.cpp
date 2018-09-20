@@ -1,8 +1,7 @@
 #define GLM_FORCE_SWIZZLE
 #include "Shader.h"
-#include "gl_core_4_4.h"
-#include <iostream>
-#include <cstdio>
+
+
 
 Shader::Shader()
 {
@@ -25,7 +24,6 @@ void Shader::unbind()
 
 void Shader::load(const char * filename, unsigned int type, bool isFile)
 {
-	std::string data;
 	errno_t err;
 	FILE *fp;
 	err = fopen_s(&fp, filename, "r");
@@ -33,12 +31,15 @@ void Shader::load(const char * filename, unsigned int type, bool isFile)
 
 	while (std::fgets(buf, sizeof buf, fp))
 	{
-		data.append(buf);
+		if (type == 0)
+			vsStr.append(buf);
+		if (type == 1)
+			fsStr.append(buf);
 	}
 	if (type == 0)
-		vsSource = data.c_str();
-	else if (type == 1)
-		fsSource = data.c_str();
+		vsSource = vsStr.c_str();
+	if (type == 1)
+		fsSource = fsStr.c_str();
 }
 
 bool Shader::attach()

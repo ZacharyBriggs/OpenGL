@@ -1,3 +1,6 @@
+#include <cstdio>
+#include "gl_core_4_4.h"
+#include <iostream>
 #pragma once
 class Shader
 {
@@ -18,6 +21,9 @@ public:
 	const char* fsSource;
 
 	unsigned int m_program;
+private:
+	std::string vsStr;
+	std::string fsStr;
 };
 
 struct ShaderData
