@@ -20,10 +20,8 @@ void GUIApplication::startup()
 	m_transform->SetModel(glm::mat4(1));
 	m_mesh->initialize(indices, vertices);
 	m_defaultShader->load("d.dik", 0);
-	m_defaultShader->load("b.buts", 1);
-	m_defaultShader->defaultLoad();
+	m_defaultShader->load("b.but", 1);
 	m_defaultShader->attach();
-	m_defaultShader->defaultLoad();
 }
 
 void GUIApplication::shutdown()
@@ -32,7 +30,7 @@ void GUIApplication::shutdown()
 
 void GUIApplication::update(float dt)
 {
-	m_transform->SetModel(glm::mat4(1)); 
+	m_transform->SetModel(glm::mat4(1));
 	glm::vec3 eye = glm::vec3(0, -10, 200);
 	m_view = glm::lookAt(eye, glm::vec3(0), glm::vec3(0, 1, 0));
 	m_projection = glm::perspective(glm::quarter_pi<float>(), 800 / (float)600, 0.1f, 1000.f);
