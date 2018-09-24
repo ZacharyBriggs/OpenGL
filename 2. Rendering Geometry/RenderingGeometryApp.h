@@ -22,7 +22,7 @@ public:
 	void update(float dt) override;
 	void draw() override;
 	void shutdown() override;
-	std::vector<glm::vec4> genHalfCircle(int numPoints, int radius);
+	std::vector<glm::vec4> genHalfCircle(int np, int radius);
 	std::vector<glm::vec4> genSphere(std::vector<glm::vec4> points, int nm);
 	std::vector<glm::vec4> rotatePoints(std::vector<glm::vec4> points, unsigned int rm);
 	std::vector<unsigned int> genIndices(int np, int nm);

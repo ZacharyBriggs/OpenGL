@@ -43,7 +43,7 @@ void RenderingGeometryApp::update(float dt)
 	rt += dt;
 	glm::mat4 rot;
 	glm::mat4 trans;
-	float angle = glm::cos(rt*0.5f) * dt;
+	float angle = glm::cos(rt*0.1f) * dt;
 	rot = glm::rotate(glm::mat4(1), angle, glm::vec3(0, 1, 0));
 	trans = glm::translate(glm::mat4(1), glm::vec3(0, 0, 0));
 	m_view = glm::lookAt(glm::vec3(0, -10, 40), glm::vec3(0,0,0), glm::vec3(0, 1, 0));
@@ -66,13 +66,16 @@ void RenderingGeometryApp::shutdown()
 
 }
 
-std::vector<glm::vec4> RenderingGeometryApp::genHalfCircle(int numPoints,int radius)
+std::vector<glm::vec4> RenderingGeometryApp::genHalfCircle(int np,int radius)
 {
-	float angle = 3.14 / numPoints;
 	std::vector<glm::vec4> points;
-	for (float theta = 0; theta < 3.14; theta += angle)
+	for (float i = 0; i < np; i++)
 	{
-		points.push_back(glm::vec4(cos(theta)*radius, sin(theta)*radius, 0, 1));
+		float angle = 3.14 / (np - 1);
+		float theta = i * angle;
+
+		points.push_back(glm::vec4(glm::cos(theta) * radius, glm::sin(theta) * radius, 0, 1));
+		points[i] = glm::round(points[i]);
 	}
 	return points;
 }
@@ -87,14 +90,14 @@ std::vector<glm::vec4> RenderingGeometryApp::rotatePoints(std::vector<glm::vec4>
 	std::vector<glm::vec4> allPoints;
 	for (int i = 0; i < nm + 1; i++)
 	{
-		float sphereSlice = (3.14 / nm);
+		float sphereSlice = 3.14 / nm;
 		float theta = i * sphereSlice;
 
 		for (int j = 0; j < points.size(); j++)
 		{
 			float newX = points[j].x;
 			float newY = points[j].y * cos(theta) + points[j].z * sin(theta);
-			float newZ = points[j].z = -sin(theta) + points[j].y * cos(theta);
+			float newZ = points[j].z * cos(theta) + points[j].y * -sin(theta);
 
 			allPoints.push_back(glm::vec4(newX, newY, newZ, 1));
 		}
