@@ -24,17 +24,22 @@ void RenderingGeometryApp::startup()
 	defaultShader->load("d.dik", 0);
 	defaultShader->load("b.but", 1);
 	defaultShader->attach();
-	std::vector<glm::vec4> points = genHalfCircle(10, 10);
+	std::vector<Vertex> vertices = genPlane(10);
+	vertices = genSquare(vertices);
+	std::vector<unsigned int> indices = genSquareIndices(vertices.size());
+
+	//gen sphere
+	/*std::vector<glm::vec4> points = genHalfCircle(10, 10);
 	points = rotatePoints(points, 10);
 
-	std::vector<unsigned int> indices = genIndices(10,10);
+	std::vector<unsigned int> indices = genIndices(10, 10);
 
-	std::vector<Vertex> vertexs;
-	for(glm::vec4 point : points)
+	std::vector<Vertex> vertices;
+	for (glm::vec4 point : points)
 	{
-		vertexs.push_back(Vertex(point, glm::vec4(1, 1, 1, 1)));
-	}
-	mesh->initialize(indices, vertexs);
+		vertices.push_back(Vertex(point, glm::vec4(1, 1, 1, 1)));
+	}*/
+	mesh->initialize(indices, vertices);
 }
 float rt = 0;
 
@@ -80,9 +85,33 @@ std::vector<glm::vec4> RenderingGeometryApp::genHalfCircle(int np,int radius)
 	return points;
 }
 
-std::vector<glm::vec4> RenderingGeometryApp::genSphere(std::vector<glm::vec4> points, int nm)
+std::vector<glm::vec4> RenderingGeometryApp::genSphere(int np, int nm, int radius)
 {
-	return std::vector<glm::vec4>();
+	std::vector<glm::vec4> points = genHalfCircle(np, radius);
+	points = rotatePoints(points, nm);
+	return points;
+}
+
+std::vector<Vertex> RenderingGeometryApp::genSquare(std::vector<Vertex> vertices)
+{
+	std::vector<Vertex> verts;
+	for (Vertex vert : vertices)
+		verts.push_back(vert);
+	for(int i = 0;i<vertices.size();i++)
+	{
+		verts.push_back(Vertex(glm::vec4(vertices[i].position.x, vertices[i].position.y, 10, 1), glm::vec4(1, 0, 0, 1)));
+	}
+	return verts;
+}
+
+std::vector<Vertex> RenderingGeometryApp::genPlane(int size)
+{
+	Vertex a = Vertex(glm::vec4(-size, size, 0, 1), glm::vec4(1, 0, 0, 1));
+	Vertex b = Vertex(glm::vec4(size, size, 0, 1), glm::vec4(1, 0, 0, 1));
+	Vertex c = Vertex(glm::vec4(size, -size, 0, 1), glm::vec4(1, 0, 0, 1));
+	Vertex d = Vertex(glm::vec4(-size, -size, 0, 1), glm::vec4(1, 0, 0, 1));
+	std::vector<Vertex> vertices = { a,b,c,d };
+	return vertices;
 }
 
 std::vector<glm::vec4> RenderingGeometryApp::rotatePoints(std::vector<glm::vec4> points, unsigned int nm)
@@ -127,5 +156,18 @@ std::vector<unsigned int> RenderingGeometryApp::genIndices(int np, int nm)
 		if (x % 3 == 0)
 			indices.push_back(0xFFFF);
 	}
+	return indices;
+}
+
+std::vector<unsigned int> RenderingGeometryApp::genSquareIndices(int np)
+{
+	std::vector<unsigned int> indices;
+	for(int i = 0; i<np;i++)
+	{
+		indices.push_back(i);
+		/*if (i % 2 == 0 && i != 0)
+			indices.push_back(i);*/
+	}
+	indices.push_back(0);
 	return indices;
 }

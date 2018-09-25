@@ -23,7 +23,10 @@ public:
 	void draw() override;
 	void shutdown() override;
 	std::vector<glm::vec4> genHalfCircle(int np, int radius);
-	std::vector<glm::vec4> genSphere(std::vector<glm::vec4> points, int nm);
+	std::vector<glm::vec4> genSphere(int np, int nm, int radiusint );
+	std::vector<Vertex> genSquare(std::vector<Vertex> vertices);
+	std::vector<Vertex> genPlane(int size);
 	std::vector<glm::vec4> rotatePoints(std::vector<glm::vec4> points, unsigned int rm);
 	std::vector<unsigned int> genIndices(int np, int nm);
+	std::vector<unsigned int> genSquareIndices(int np);
 };
