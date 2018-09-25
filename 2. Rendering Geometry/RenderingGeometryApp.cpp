@@ -1,7 +1,6 @@
 #define GLM_FORCE_SWIZZLE
 #include "Shader.h"
 #include "MeshRenderer.h"
-#include "Vertex.h"
 #include "RenderingGeometryApp.h"
 #include <glm/glm/ext.hpp>
 #include "gl_core_4_4.h"
@@ -24,18 +23,17 @@ void RenderingGeometryApp::startup()
 	defaultShader->load("d.dik", 0);
 	defaultShader->load("b.but", 1);
 	defaultShader->attach();
-	std::vector<Vertex> vertices = genPlane(10);
-	vertices = genSquare(vertices);
-	std::vector<unsigned int> indices = genSquareIndices(vertices.size());
+	std::vector<Vertex> vertices = genCube(vertices);
+	std::vector<unsigned int> indices = genCubeIndices();
 
 	//gen sphere
-	/*std::vector<glm::vec4> points = genHalfCircle(10, 10);
-	points = rotatePoints(points, 10);
-
-	std::vector<unsigned int> indices = genIndices(10, 10);
-
+	/*int nm = 5;
+	int np = 4;
+	std::vector<glm::vec4> points = genHalfCircle(np,5);
+	std::vector<glm::vec4> spherePoints = genSphere(points, nm);
+	std::vector<unsigned int> indices = genIndices(np, nm);
 	std::vector<Vertex> vertices;
-	for (glm::vec4 point : points)
+	for (glm::vec4 point : spherePoints)
 	{
 		vertices.push_back(Vertex(point, glm::vec4(1, 1, 1, 1)));
 	}*/
@@ -46,14 +44,15 @@ float rt = 0;
 void RenderingGeometryApp::update(float dt)
 { 
 	rt += dt;
-	glm::mat4 rot;
 	glm::mat4 trans;
-	float angle = glm::cos(rt*0.1f) * dt;
-	rot = glm::rotate(glm::mat4(1), angle, glm::vec3(0, 1, 0));
+	float angle = glm::cos(rt*0.5f) * dt;
+	glm::mat4 rot = glm::rotate(glm::mat4(1), glm::cos(dt), glm::vec3(0, 1, 0));
 	trans = glm::translate(glm::mat4(1), glm::vec3(0, 0, 0));
-	m_view = glm::lookAt(glm::vec3(0, -10, 40), glm::vec3(0,0,0), glm::vec3(0, 1, 0));
+	m_view = glm::lookAt(glm::vec3(0, -10, 20), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	m_projection = glm::perspective(glm::quarter_pi<float>(), 800 / (float)600, 0.1f, 1000.f);
-	m_model = glm::mat4(1) * trans * rot;
+	m_model = glm::mat4(1) * rot;
+	/*m_model = glm::mat4(1);*/
+	
 }
 void RenderingGeometryApp::draw()
 {
@@ -74,34 +73,60 @@ void RenderingGeometryApp::shutdown()
 std::vector<glm::vec4> RenderingGeometryApp::genHalfCircle(int np,int radius)
 {
 	std::vector<glm::vec4> points;
+
 	for (float i = 0; i < np; i++)
 	{
-		float angle = 3.14 / (np - 1);
+		float angle = glm::pi<float>() / ((float)np - 1);
 		float theta = i * angle;
 
 		points.push_back(glm::vec4(glm::cos(theta) * radius, glm::sin(theta) * radius, 0, 1));
-		points[i] = glm::round(points[i]);
 	}
 	return points;
 }
 
-std::vector<glm::vec4> RenderingGeometryApp::genSphere(int np, int nm, int radius)
+std::vector<glm::vec4> RenderingGeometryApp::genSphere(std::vector<glm::vec4> points, unsigned int nm)
 {
-	std::vector<glm::vec4> points = genHalfCircle(np, radius);
-	points = rotatePoints(points, nm);
-	return points;
-}
-
-std::vector<Vertex> RenderingGeometryApp::genSquare(std::vector<Vertex> vertices)
-{
-	std::vector<Vertex> verts;
-	for (Vertex vert : vertices)
-		verts.push_back(vert);
-	for(int i = 0;i<vertices.size();i++)
+	std::vector<glm::vec4> allPoints;
+	for (int i = 0; i < nm + 1; i++)
 	{
-		verts.push_back(Vertex(glm::vec4(vertices[i].position.x, vertices[i].position.y, 10, 1), glm::vec4(1, 0, 0, 1)));
+		float sphereSlice = (glm::pi<float>()  * 2) / (float)nm;
+		float theta = i * sphereSlice;
+
+		for (int j = 0; j < points.size(); j++)
+		{
+			float newX = points[j].x;
+			float newY = points[j].y * cos(theta) + points[j].z * -sin(theta);
+			float newZ = points[j].z * cos(theta) + points[j].y * sin(theta);
+			glm::vec4 point = glm::vec4(newX, newY, newZ, 1);
+			allPoints.push_back(point);
+		}
 	}
-	return verts;
+	return allPoints;
+}
+
+std::vector<unsigned int> RenderingGeometryApp::genIndices(unsigned int np, unsigned int nm)
+{
+	std::vector<unsigned int> indices;
+
+	unsigned int start;
+	unsigned int bot_left;
+	unsigned int bot_right;
+
+	for (int y = 0; y < nm; y++)
+	{
+		start = y * np;
+
+		for (int j = 0; j < np; j++)
+		{
+			bot_left = start + j;
+			bot_right = bot_left + np;
+
+			indices.push_back(bot_left);
+			indices.push_back(bot_right);
+		}
+		indices.push_back(0xFFFF);
+	}
+	return indices;
 }
 
 std::vector<Vertex> RenderingGeometryApp::genPlane(int size)
@@ -114,60 +139,53 @@ std::vector<Vertex> RenderingGeometryApp::genPlane(int size)
 	return vertices;
 }
 
-std::vector<glm::vec4> RenderingGeometryApp::rotatePoints(std::vector<glm::vec4> points, unsigned int nm)
+std::vector<Vertex> RenderingGeometryApp::genCube(std::vector<Vertex> vertices)
 {
-	std::vector<glm::vec4> allPoints;
-	for (int i = 0; i < nm + 1; i++)
-	{
-		float sphereSlice = 3.14 / nm;
-		float theta = i * sphereSlice;
+	std::vector<Vertex> verts;
+	//Front
+	verts.push_back(Vertex(glm::vec4(0, 1, 1, 1),glm::vec4(1)));//0
+	verts.push_back(Vertex(glm::vec4(1, 1, 1, 1), glm::vec4(1)));//1
+	verts.push_back(Vertex(glm::vec4(1, 0, 1, 1), glm::vec4(1)));//2
+	verts.push_back(Vertex(glm::vec4(0, 0, 1, 1), glm::vec4(1)));//3
 
-		for (int j = 0; j < points.size(); j++)
-		{
-			float newX = points[j].x;
-			float newY = points[j].y * cos(theta) + points[j].z * sin(theta);
-			float newZ = points[j].z * cos(theta) + points[j].y * -sin(theta);
+	//Bot
+	verts.push_back(Vertex(glm::vec4(0, 0, 0, 1), glm::vec4(1)));//4
+	verts.push_back(Vertex(glm::vec4(1, 0, 0, 1), glm::vec4(1)));//5
 
-			allPoints.push_back(glm::vec4(newX, newY, newZ, 1));
-		}
-	}
-	return allPoints;
+	//Back
+	verts.push_back(Vertex(glm::vec4(1, 1, 0, 1), glm::vec4(1)));//6
+	verts.push_back(Vertex(glm::vec4(0, 1, 0, 1), glm::vec4(1)));//7
+
+	//Top
+	verts.push_back(Vertex(glm::vec4(0, 1, 1, 1), glm::vec4(1)));//8
+	verts.push_back(Vertex(glm::vec4(1, 1, 1, 1), glm::vec4(1)));//9
+
+	//Right
+	verts.push_back(Vertex(glm::vec4(1, 1, 0, 1), glm::vec4(1)));//10
+	verts.push_back(Vertex(glm::vec4(1, 0, 0, 1), glm::vec4(1)));//11
+
+	//Left
+	verts.push_back(Vertex(glm::vec4(0, 1, 0, 1), glm::vec4(1)));//12
+	verts.push_back(Vertex(glm::vec4(0, 0, 0, 1), glm::vec4(1)));//13
+	return verts;
 }
 
-std::vector<unsigned int> RenderingGeometryApp::genIndices(int np, int nm)
+std::vector<unsigned int> RenderingGeometryApp::genCubeIndices()
 {
-	std::vector<unsigned int> indices;
-	std::vector<unsigned int> bot_left;
-	std::vector<unsigned int> bot_right;
-	int i = 0;
-	for (int j = 0; j < nm - 1; j++)
-	{
-		for (int y = 0; y < np; y++)
-		{
-			bot_left.push_back(i);
-			bot_right.push_back(i + np);
-			i++;
-		}
-	}
-	for (int x = 1; x <= bot_left.size(); x++)
-	{
-		indices.push_back(bot_left[x-1]);
-		indices.push_back(bot_right[x-1]);
-		if (x % 3 == 0)
-			indices.push_back(0xFFFF);
-	}
-	return indices;
-}
-
-std::vector<unsigned int> RenderingGeometryApp::genSquareIndices(int np)
-{
-	std::vector<unsigned int> indices;
-	for(int i = 0; i<np;i++)
-	{
-		indices.push_back(i);
-		/*if (i % 2 == 0 && i != 0)
-			indices.push_back(i);*/
-	}
-	indices.push_back(0);
+	std::vector<unsigned int> indices = 
+	{	0,1,2,2,3,0,//front
+		3,2,4,4,5,2,//Bot
+		4,5,6,6,7,4,//Back
+		6,7,8,8,9,6,//Top
+		2,1,10,10,11,2,//Right
+		0,3,12,12,13,0//Left
+	};
+	//for (int i = 0; i<np; i++)
+	//{
+	//	indices.push_back(i);
+	//	/*if (i % 2 == 0 && i != 0)
+	//	indices.push_back(i);*/
+	//}
+	//indices.push_back(0);
 	return indices;
 }
