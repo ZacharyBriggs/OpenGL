@@ -1,8 +1,12 @@
 #version 410
+uniform vec4 lightPos;
+uniform vec4 lightColor;
+uniform vec4 diffuse;
 in vec4 vColor;
 in vec4 vPosition;
 out vec4 FragColor;
 void main()
 {
-	FragColor = vPosition;
+	
+	FragColor = vec4(vColor.rgb * lightColor.rgb,1) + diffuse;
 }

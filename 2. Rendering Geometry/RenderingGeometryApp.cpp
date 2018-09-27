@@ -1,6 +1,8 @@
 #define GLM_FORCE_SWIZZLE
 #include "Shader.h"
 #include "MeshRenderer.h"
+#include "Light.h"
+#include "DirectionalLight.h"
 #include "RenderingGeometryApp.h"
 #include <glm/glm/ext.hpp>
 #include "gl_core_4_4.h"
@@ -20,23 +22,31 @@ void RenderingGeometryApp::startup()
 {
 	mesh = new MeshRenderer();
 	defaultShader = new Shader();
+	DaLight = new DirectionalLight();
+	DaLight->color = glm::vec4(1, 0, 0, 1);
+	DaLight->direction = glm::vec3(0,1,0);
+	//8. Ability to load shaders from file using a Shader class object.
 	defaultShader->load("d.dik", 0);
 	defaultShader->load("b.but", 1);
 	defaultShader->attach();
-	std::vector<Vertex> vertices = genCube(vertices);
-	std::vector<unsigned int> indices = genCubeIndices();
+
+	/*std::vector<Vertex> vertices = genCube(vertices);
+	std::vector<unsigned int> indices = genCubeIndices();*/
 
 	//gen sphere
-	/*int nm = 5;
-	int np = 4;
+	int nm = 51;
+	int np = 50;
 	std::vector<glm::vec4> points = genHalfCircle(np,5);
 	std::vector<glm::vec4> spherePoints = genSphere(points, nm);
-	std::vector<unsigned int> indices = genIndices(np, nm);
+	std::vector<unsigned int> indices = genSphereIndices(np, nm);
 	std::vector<Vertex> vertices;
 	for (glm::vec4 point : spherePoints)
 	{
 		vertices.push_back(Vertex(point, glm::vec4(1, 1, 1, 1)));
-	}*/
+	}
+	glm::vec4 material = vertices[0].color;
+	ambient = material * DaLight->color;;
+	diffuse = material * (glm::vec4(DaLight->direction,1)*glm::vec4(1,1,1,1))*DaLight->color;
 	mesh->initialize(indices, vertices);
 }
 float rt = 0;
@@ -58,9 +68,13 @@ void RenderingGeometryApp::draw()
 {
 	defaultShader->bind();
 	int handle = defaultShader->getUniform("ProjectionViewWorld");
-	 
+	int lightHandle = defaultShader->getUniform("lightColor");
+	int diffuseHandle = defaultShader->getUniform("diffuse");
 	glm::mat4 mvp = m_projection * m_view * m_model;
 	glUniformMatrix4fv(handle, 1, GL_FALSE, &mvp[0][0]);
+	glm::vec4 col = DaLight->color;	
+	glUniform4fv(lightHandle, 1, &col[0]);
+	glUniform4fv(diffuseHandle, 1, &diffuse[0]);
 	mesh->render();
 	defaultShader->unbind();
 }
@@ -70,6 +84,7 @@ void RenderingGeometryApp::shutdown()
 
 }
 
+//1. Function that generates a half circle given a number of points and radius.
 std::vector<glm::vec4> RenderingGeometryApp::genHalfCircle(int np,int radius)
 {
 	std::vector<glm::vec4> points;
@@ -84,6 +99,7 @@ std::vector<glm::vec4> RenderingGeometryApp::genHalfCircle(int np,int radius)
 	return points;
 }
 
+//2. Function that generates a sphere given a half circle, and number of meridians.
 std::vector<glm::vec4> RenderingGeometryApp::genSphere(std::vector<glm::vec4> points, unsigned int nm)
 {
 	std::vector<glm::vec4> allPoints;
@@ -104,7 +120,8 @@ std::vector<glm::vec4> RenderingGeometryApp::genSphere(std::vector<glm::vec4> po
 	return allPoints;
 }
 
-std::vector<unsigned int> RenderingGeometryApp::genIndices(unsigned int np, unsigned int nm)
+//3. Function that generates indices for geometry to be rendered using triangle strips.
+std::vector<unsigned int> RenderingGeometryApp::genSphereIndices(unsigned int np, unsigned int nm)
 {
 	std::vector<unsigned int> indices;
 
@@ -129,6 +146,7 @@ std::vector<unsigned int> RenderingGeometryApp::genIndices(unsigned int np, unsi
 	return indices;
 }
 
+//4. Ability to render a plane with predefined vertex information.
 std::vector<Vertex> RenderingGeometryApp::genPlane(int size)
 {
 	Vertex a = Vertex(glm::vec4(-size, size, 0, 1), glm::vec4(1, 0, 0, 1));
@@ -139,6 +157,7 @@ std::vector<Vertex> RenderingGeometryApp::genPlane(int size)
 	return vertices;
 }
 
+//5. Ability to render a cube with predefined vertex information.
 std::vector<Vertex> RenderingGeometryApp::genCube(std::vector<Vertex> vertices)
 {
 	std::vector<Vertex> verts;
@@ -180,12 +199,5 @@ std::vector<unsigned int> RenderingGeometryApp::genCubeIndices()
 		2,1,10,10,11,2,//Right
 		0,3,12,12,13,0//Left
 	};
-	//for (int i = 0; i<np; i++)
-	//{
-	//	indices.push_back(i);
-	//	/*if (i % 2 == 0 && i != 0)
-	//	indices.push_back(i);*/
-	//}
-	//indices.push_back(0);
 	return indices;
 }
