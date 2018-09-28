@@ -24,10 +24,10 @@ void RenderingGeometryApp::startup()
 	defaultShader = new Shader();
 	DaLight = new DirectionalLight();
 	DaLight->color = glm::vec4(1, 0, 0, 1);
-	DaLight->direction = glm::vec3(0,1,0);
+	DaLight->direction = glm::vec3(1,0,0);
 	//8. Ability to load shaders from file using a Shader class object.
-	defaultShader->load("d.dik", 0);
-	defaultShader->load("b.but", 1);
+	defaultShader->load("d.vertex", 0);
+	defaultShader->load("b.fragment", 1);
 	defaultShader->attach();
 
 	/*std::vector<Vertex> vertices = genCube(vertices);
@@ -45,7 +45,7 @@ void RenderingGeometryApp::startup()
 		vertices.push_back(Vertex(point, glm::vec4(1, 1, 1, 1)));
 	}
 	glm::vec4 material = vertices[0].color;
-	ambient = material * DaLight->color;;
+	ambient = material * DaLight->color;
 	diffuse = material * (glm::vec4(DaLight->direction,1)*glm::vec4(1,1,1,1))*DaLight->color;
 	mesh->initialize(indices, vertices);
 }
@@ -69,12 +69,12 @@ void RenderingGeometryApp::draw()
 	defaultShader->bind();
 	int handle = defaultShader->getUniform("ProjectionViewWorld");
 	int lightHandle = defaultShader->getUniform("lightColor");
-	int diffuseHandle = defaultShader->getUniform("diffuse");
+	int lightPosHandle = defaultShader->getUniform("lightPos");
+	int lightDirHandle = defaultShader->getUniform("lightDirection");
 	glm::mat4 mvp = m_projection * m_view * m_model;
 	glUniformMatrix4fv(handle, 1, GL_FALSE, &mvp[0][0]);
-	glm::vec4 col = DaLight->color;	
+	glm::vec4 col = DaLight->color;
 	glUniform4fv(lightHandle, 1, &col[0]);
-	glUniform4fv(diffuseHandle, 1, &diffuse[0]);
 	mesh->render();
 	defaultShader->unbind();
 }
@@ -192,7 +192,8 @@ std::vector<Vertex> RenderingGeometryApp::genCube(std::vector<Vertex> vertices)
 std::vector<unsigned int> RenderingGeometryApp::genCubeIndices()
 {
 	std::vector<unsigned int> indices = 
-	{	0,1,2,2,3,0,//front
+	{	
+		0,1,2,2,3,0,//front
 		3,2,4,4,5,2,//Bot
 		4,5,6,6,7,4,//Back
 		6,7,8,8,9,6,//Top

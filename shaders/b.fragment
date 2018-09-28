@@ -1,0 +1,17 @@
+#version 410
+uniform vec4 lightPos;
+uniform vec4 lightColor;
+vec4 lightDirection;
+in vec4 vColor;
+in vec4 vPosition;
+out vec4 FragColor;
+void main()
+{
+	vec4 ambient = vec4(vColor.rgb * lightColor.rgb,1);
+	lightDirection = vPosition - lightPos;
+	lightDirection = normalize(lightDirection);
+	vec4 normal = normalize(vPosition);
+	float d = dot(lightDirection, normal);
+	vec4 diffuse = (vColor * d);
+	FragColor = ambient + diffuse;
+}
