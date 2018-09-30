@@ -7,7 +7,7 @@ public:
 	~Shader();
 	void bind();
 	void unbind();
-	void load(const char* filename, unsigned int type, bool isFile = true);
+	void load(const char* filename, unsigned int type);
 	bool attach();
 	void defaultLoad();
 

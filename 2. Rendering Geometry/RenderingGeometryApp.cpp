@@ -25,13 +25,12 @@ void RenderingGeometryApp::startup()
 	DaLight = new DirectionalLight();
 	DaLight->color = glm::vec4(1, .5, 0, 1);
 	DaLight->direction = glm::vec3(1,1,0);
-	//8. Ability to load shaders from file using a Shader class object.
 	defaultShader->load("d.vertex", 0);
 	defaultShader->load("b.fragment", 1);
 	defaultShader->attach();
 
-	/*std::vector<Vertex> vertices = genCube(vertices);
-	std::vector<unsigned int> indices = genCubeIndices();*/
+	/*std::vector<Vertex> vertices = genPlane(5);
+	std::vector<unsigned int> indices = {0,1,2,3,0};*/
 	  
 	//gen sphere
 	int nm = 51;
@@ -92,13 +91,21 @@ void RenderingGeometryApp::shutdown()
 //1. Function that generates a half circle given a number of points and radius.
 std::vector<glm::vec4> RenderingGeometryApp::genHalfCircle(int np,int radius)
 {
+	//A vector of vec4s that the indices will be pushed onto and returned
 	std::vector<glm::vec4> points;
 
 	for (float i = 0; i < np; i++)
 	{
-		float angle = glm::pi<float>() / ((float)np - 1);
-		float theta = i * angle;
-
+		//We calculate the slice by divinding pi by the number of points.
+		float slice = glm::pi<float>() / ((float)np - 1);
+		//Theta is the current point multiplied by the slice we just calculated
+		//This will give us the angle between the current point and the last point
+		float theta = i * slice;
+		//We calculate the point using theta and cos/sin
+		//Cos always represents X while Sin represents Y
+		//Z is set to 0 since we're only generating a circle, not a sphere.
+		//Since we're using a vec4 we need a 4th value but it doesn't represent anything and we don't care about
+		//it so we just set it to 0.
 		points.push_back(glm::vec4(glm::cos(theta) * radius, glm::sin(theta) * radius, 0, 1));
 	}
 	return points;
@@ -107,18 +114,28 @@ std::vector<glm::vec4> RenderingGeometryApp::genHalfCircle(int np,int radius)
 //2. Function that generates a sphere given a half circle, and number of meridians.
 std::vector<glm::vec4> RenderingGeometryApp::genSphere(std::vector<glm::vec4> points, unsigned int nm)
 {
+	//THe points to be generated and returned at the end of the function
 	std::vector<glm::vec4> allPoints;
 	for (int i = 0; i < nm + 1; i++)
 	{
+		//sphereSlice is calculated by multiplying pi by 2 and then diving by the number of rotations/miridians
 		float sphereSlice = (glm::pi<float>()  * 2) / (float)nm;
+		//Theta is the current point multiplied by the slice we just calculated
+		//This will give us the angle between the current point and the last point
 		float theta = i * sphereSlice;
 
 		for (int j = 0; j < points.size(); j++)
 		{
+			//We rotate and the X so X doesn't change.
 			float newX = points[j].x;
+			//We calculate y by multiplying the old Y by cosine of theta and then adding it to
+			//old Z multiplyed by negative sine of theta
 			float newY = points[j].y * cos(theta) + points[j].z * -sin(theta);
+			//In order to calculate Z we do the opposite of the above except sine is not negative.
 			float newZ = points[j].z * cos(theta) + points[j].y * sin(theta);
+			//We create a new point and give it the values we just calculated.
 			glm::vec4 point = glm::vec4(newX, newY, newZ, 1);
+			//We push the point onto the list of points.
 			allPoints.push_back(point);
 		}
 	}
@@ -129,9 +146,16 @@ std::vector<glm::vec4> RenderingGeometryApp::genSphere(std::vector<glm::vec4> po
 std::vector<unsigned int> RenderingGeometryApp::genSphereIndices(unsigned int np, unsigned int nm)
 {
 	std::vector<unsigned int> indices;
+	//
+	//2 5	5 8
+	//1 4	4 7
+	//0 3	3 6
 
+	//start represents which group of columns we're on.
 	unsigned int start;
+	//bot_left represents the left column.
 	unsigned int bot_left;
+	//bot_right represents the right column.
 	unsigned int bot_right;
 
 	for (int y = 0; y < nm; y++)
@@ -143,9 +167,12 @@ std::vector<unsigned int> RenderingGeometryApp::genSphereIndices(unsigned int np
 			bot_left = start + j;
 			bot_right = bot_left + np;
 
+			//We alternate between bot_left and bot_right to get the pattern for the sphere indices.
+			//It'll look something like 0,3,1,4,2,5,etc.
 			indices.push_back(bot_left);
 			indices.push_back(bot_right);
 		}
+		//We push 0xFFFF to tell the program to restart the drawing of the triangle strip.
 		indices.push_back(0xFFFF);
 	}
 	return indices;
@@ -154,17 +181,23 @@ std::vector<unsigned int> RenderingGeometryApp::genSphereIndices(unsigned int np
 //4. Ability to render a plane with predefined vertex information.
 std::vector<Vertex> RenderingGeometryApp::genPlane(int size)
 {
-	Vertex a = Vertex(glm::vec4(-size, size, 0, 1), glm::vec4(1, 0, 0, 1));
-	Vertex b = Vertex(glm::vec4(size, size, 0, 1), glm::vec4(1, 0, 0, 1));
-	Vertex c = Vertex(glm::vec4(size, -size, 0, 1), glm::vec4(1, 0, 0, 1));
-	Vertex d = Vertex(glm::vec4(-size, -size, 0, 1), glm::vec4(1, 0, 0, 1));
-	std::vector<Vertex> vertices = { a,b,c,d };
+	//We generate the top left ,top right, bot left, bot right points and then return them.
+	Vertex tl = Vertex(glm::vec4(-size, size, 0, 1), glm::vec4(1, 0, 0, 1));
+	Vertex tr = Vertex(glm::vec4(size, size, 0, 1), glm::vec4(1, 0, 0, 1));
+	Vertex bl = Vertex(glm::vec4(size, -size, 0, 1), glm::vec4(1, 0, 0, 1));
+	Vertex br = Vertex(glm::vec4(-size, -size, 0, 1), glm::vec4(1, 0, 0, 1));
+	std::vector<Vertex> vertices = { tl,tr,bl,br };
 	return vertices;
 }
 
 //5. Ability to render a cube with predefined vertex information.
 std::vector<Vertex> RenderingGeometryApp::genCube(std::vector<Vertex> vertices)
 {
+	//We generate a cube with points that we define since procedurally is impossible
+	//or just very difficult.
+	//Each side of the cube is just like generating a plane.
+	//Each side after the Front side shares ponts with the side before it so they'll 
+	//only need two points rather than four. 
 	std::vector<Vertex> verts;
 	//Front
 	verts.push_back(Vertex(glm::vec4(0, 1, 1, 1),glm::vec4(1)));//0
@@ -196,8 +229,13 @@ std::vector<Vertex> RenderingGeometryApp::genCube(std::vector<Vertex> vertices)
 
 std::vector<unsigned int> RenderingGeometryApp::genCubeIndices()
 {
+	//Much like the verts we have to hard set the indices
+	//Again we don't need to repeat points so each side shares points with the one before it.
 	std::vector<unsigned int> indices = 
 	{	
+		//We draw two triangles to make a square.
+		//First square => 0,1,2 Second square = 2,3,0
+		//This repeats for each side of course.
 		0,1,2,2,3,0,//front
 		3,2,4,4,5,2,//Bot
 		4,5,6,6,7,4,//Back

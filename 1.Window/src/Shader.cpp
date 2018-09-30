@@ -2,6 +2,7 @@
 #include "Shader.h"
 #include <cstdio>
 #include "gl_core_4_4.h"
+#include <iostream>
 
 
 
@@ -24,20 +25,31 @@ void Shader::unbind()
 	glUseProgram(0);
 }
 
-void Shader::load(const char * filename, unsigned int type, bool isFile)
+//8. Ability to load shaders from file using a Shader class object.
+//Takes in the name of the file and the type of the file.
+//0 is a vertex shader. 1 is a fragment shader.
+void Shader::load(const char * filename, unsigned int type)
 {
+	//Error code incase something goes wrong.
 	errno_t err;
+	//Make a file variable so we can find and open the file.
 	FILE *fp;
+	//Look for the file and open it for reading
 	err = fopen_s(&fp, filename, "r");
+	//We make a buffer of sufficent size to store all the data.
 	char buf[500];
-
+	//A string to appened the buffered data to.
+	std::string str;
+	//Open the file and loop through while there is data in the file that hasn't been buffered.
 	while (std::fgets(buf, sizeof buf, fp))
 	{
+		//Depending on the type we append the buffered data to a vertex or fragment string
 		if (type == 0)
 			vsStr.append(buf);
 		if (type == 1)
 			fsStr.append(buf);
 	}
+	//We assign the data to one of the member variables depending on the type.
 	if (type == 0)
 		vsSource = vsStr.c_str();
 	if (type == 1)
