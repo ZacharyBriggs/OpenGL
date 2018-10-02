@@ -27,11 +27,11 @@ int MeshRenderer::initialize(std::vector<unsigned int>& indices, std::vector<Ver
 int MeshRenderer::render()
 {
 	glBindVertexArray(m_vao);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLE_STRIP);
 	glPrimitiveRestartIndex(0xFFFF);
-	//glEnable(GL_PRIMITIVE_RESTART);
-	glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
-	//glDisable(GL_PRIMITIVE_RESTART);
+	glEnable(GL_PRIMITIVE_RESTART);
+	glDrawElements(GL_TRIANGLE_STRIP, m_indices.size(), GL_UNSIGNED_INT, 0);
+	glDisable(GL_PRIMITIVE_RESTART);
 	glBindVertexArray(0);
 	return 0;
 }
