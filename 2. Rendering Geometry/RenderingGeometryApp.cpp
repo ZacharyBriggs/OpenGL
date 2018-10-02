@@ -28,7 +28,7 @@ void RenderingGeometryApp::startup()
 
 	/*std::vector<Vertex> vertices = genPlane(5);
 	std::vector<unsigned int> indices = {0,1,2,3,0};*/
-	  
+
 	//gen sphere
 	int nm = 51;
 	int np = 50;
