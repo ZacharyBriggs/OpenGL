@@ -8,6 +8,7 @@ public:
 	~Geometry();
 	std::vector<Vertex> m_Vertices;
 	std::vector<unsigned int> m_Indices;
+	float Position[3] = { 0,0,0 };
 	std::vector<glm::vec4> genHalfCircle(int np, int radius);
 	std::vector<glm::vec4> genSphere(std::vector<glm::vec4> points, unsigned int rm);
 	std::vector<unsigned int> genSphereIndices(unsigned int np, unsigned int nm);

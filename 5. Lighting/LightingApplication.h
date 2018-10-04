@@ -14,6 +14,8 @@ public:
 	LightingApplication();
 	~LightingApplication();
 	MeshRenderer* mesh;
+	MeshRenderer* mesh2;
+	MeshRenderer* lightSphere;
 	Shader* defaultShader;
 	Geometry* geo;
 	DirectionalLight* DaLight;

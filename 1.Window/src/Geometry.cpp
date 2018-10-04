@@ -50,12 +50,12 @@ std::vector<glm::vec4> Geometry::genSphere(std::vector<glm::vec4> points, unsign
 		for (int j = 0; j < points.size(); j++)
 		{
 			//We rotate and the X so X doesn't change.
-			float newX = points[j].x;
+			float newX = points[j].x + Position[0];
 			//We calculate y by multiplying the old Y by cosine of theta and then adding it to
 			//old Z multiplyed by negative sine of theta
-			float newY = points[j].y * cos(theta) + points[j].z * -sin(theta);
+			float newY = points[j].y * cos(theta) + points[j].z * -sin(theta) + Position[1];
 			//In order to calculate Z we do the opposite of the above except sine is not negative.
-			float newZ = points[j].z * cos(theta) + points[j].y * sin(theta);
+			float newZ = points[j].z * cos(theta) + points[j].y * sin(theta) + Position[2];
 			//We create a new point and give it the values we just calculated.
 			glm::vec4 point = glm::vec4(newX, newY, newZ, 1);
 			//We push the point onto the list of points.
@@ -69,7 +69,6 @@ std::vector<glm::vec4> Geometry::genSphere(std::vector<glm::vec4> points, unsign
 std::vector<unsigned int> Geometry::genSphereIndices(unsigned int np, unsigned int nm)
 {
 	std::vector<unsigned int> indices;
-	//
 	//2 5	5 8
 	//1 4	4 7
 	//0 3	3 6
