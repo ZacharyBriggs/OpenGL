@@ -107,26 +107,39 @@ void LightingApplication::update(float dt)
 	{
 		vertices3.push_back(Vertex(point, glm::vec4(1, 1, 1, 1)));
 	}
-	if (glfwGetKey(m_window, GLFW_KEY_UP))
-		geo->Position[1] += 0.1;
-	if (glfwGetKey(m_window, GLFW_KEY_DOWN))
-		geo->Position[1] -= 0.1;
-	if (glfwGetKey(m_window, GLFW_KEY_RIGHT))
-		geo->Position[0] += 0.1;
-	if (glfwGetKey(m_window, GLFW_KEY_LEFT))
-		geo->Position[0] -= 0.1;
 
-	if (glfwGetKey(m_window, GLFW_KEY_1))
-		aC == 1 ? aC = 0 : aC = 1;
-	if (glfwGetKey(m_window, GLFW_KEY_2))
-		dC == 1 ? dC = 0 : dC = 1;
-	if (glfwGetKey(m_window, GLFW_KEY_3))
-		sC == 1 ? sC = 0 : sC = 1;
 
 	DaLight->pos = glm::vec3(geo->Position[0], geo->Position[1], 0);
 	lightSphere->initialize(indices3, vertices3);
+	glfwSetWindowUserPointer(m_window, this);
+	glfwSetKeyCallback(m_window, key_callback);
+	
+}
+  
+void LightingApplication::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	LightingApplication* instance = (LightingApplication*)glfwGetWindowUserPointer(window);
+	Geometry* geo = instance->geo;
+	if (action == GLFW_PRESS)
+	{
+		if (key == GLFW_KEY_UP)
+			geo->Position[1] += 0.1;
+		if (key == GLFW_KEY_DOWN)
+			geo->Position[1] -= 0.1;
+		if (key == GLFW_KEY_RIGHT)
+			geo->Position[0] += 0.1;
+		if (key == GLFW_KEY_LEFT)
+			geo->Position[0] -= 0.1;
+		if (key == GLFW_KEY_1)
+			aC == 1 ? aC = 0 : aC = 1;
+		if (key == GLFW_KEY_2)
+			dC == 1 ? dC = 0 : dC = 1;
+		if (key == GLFW_KEY_3)
+			sC == 1 ? sC = 0 : sC = 1;
+	}
 
 }
+
 void LightingApplication::draw()
 {
 	defaultShader->bind();
@@ -139,7 +152,7 @@ void LightingApplication::draw()
 	int diffuseCoHandle = defaultShader->getUniform("diffuseCo");
 	int specularCoHandle = defaultShader->getUniform("specularCo");
 	glm::mat4 mvp = m_projection * m_view * m_model;
-	
+
 	glUniformMatrix4fv(handle, 1, GL_FALSE, &mvp[0][0]);
 	glm::vec3 col = DaLight->color;
 	glUniform3fv(lightColorHandle, 1, &col[0]);
