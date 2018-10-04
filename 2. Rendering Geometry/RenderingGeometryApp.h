@@ -1,11 +1,22 @@
 #pragma once
+#include "Vertex.h"
+#include "Application.h"
+#include "glm/glm/glm.hpp"
+#include "glm/glm/fwd.hpp"
+#include <vector>
 
+class MeshRenderer;
+class Shader;
+class DirectionalLight;
+class Geometry;
 
 class RenderingGeometryApp : public Application
 {
 public:
 	MeshRenderer* mesh;
 	Shader* defaultShader;
+	DirectionalLight* DaLight;
+	Geometry* geo;
 	RenderingGeometryApp();
 	~RenderingGeometryApp();
 	unsigned int m_program;
@@ -15,5 +26,5 @@ public:
 	void startup() override;
 	void update(float dt) override;
 	void draw() override;
-	void shutdown() override;	
+	void shutdown() override;
 };

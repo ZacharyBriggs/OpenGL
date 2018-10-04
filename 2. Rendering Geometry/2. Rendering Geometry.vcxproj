@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)dep;$(SolutionDir)1.Window;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)2.Rendering Geometry;$(SolutionDir)1.Window;$(SolutionDir)dep\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\s178020\Documents\GitHub\OpenGL\1.Window\src;C:\Users\s178020\Documents\GitHub\OpenGL\1.Window\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)dep;$(IncludePath)</IncludePath>
@@ -83,9 +83,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)1.Window\src;$(SolutionDir)dep\include;$(SolutionDir)1.Window\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;1.Window.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>1.Window.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)dep\lib\bootstrap</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -128,17 +130,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="RenderingGeometryApp.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="RenderingGeometryApp.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
