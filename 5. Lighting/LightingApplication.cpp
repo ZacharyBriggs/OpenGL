@@ -105,7 +105,7 @@ void LightingApplication::update(float dt)
 	std::vector<Vertex> vertices3;
 	for (glm::vec4 point : spherePoints3)
 	{
-		vertices3.push_back(Vertex(point, glm::vec4(1, 1, 1, 1)));
+		vertices3.push_back(Vertex(point, glm::vec4(1, 1, 1, 1),));
 	}
 
 
