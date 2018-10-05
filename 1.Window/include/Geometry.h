@@ -6,14 +6,11 @@ class Geometry
 public:
 	Geometry();
 	~Geometry();
-	std::vector<Vertex> m_Vertices;
-	std::vector<unsigned int> m_Indices;
-	float Position[3] = { 0,0,0 };
-	std::vector<glm::vec4> genHalfCircle(int np, int radius);
-	std::vector<glm::vec4> genSphere(std::vector<glm::vec4> points, unsigned int rm);
-	std::vector<unsigned int> genSphereIndices(unsigned int np, unsigned int nm);
-	std::vector<Vertex> genPlane(int size);
-	std::vector<Vertex> genCube(std::vector<Vertex> vertices);
-	std::vector<unsigned int> genCubeIndices();
+	static std::vector<glm::vec4> genHalfCircle(int np, int radius);
+	static std::vector<glm::vec4> genSphere(std::vector<glm::vec4> points, unsigned int rm, glm::vec3 position);
+	static std::vector<unsigned int> genSphereIndices(unsigned int np, unsigned int nm);
+	static std::vector<Vertex> genPlane(int size);
+	static std::vector<Vertex> genCube(std::vector<Vertex> vertices);
+	static std::vector<unsigned int> genCubeIndices();
 };
 

@@ -35,7 +35,7 @@ std::vector<glm::vec4> Geometry::genHalfCircle(int np, int radius)
 }
 
 //2. Function that generates a sphere given a half circle, and number of meridians.
-std::vector<glm::vec4> Geometry::genSphere(std::vector<glm::vec4> points, unsigned int nm)
+std::vector<glm::vec4> Geometry::genSphere(std::vector<glm::vec4> points, unsigned int nm, glm::vec3 position)
 {
 	//THe points to be generated and returned at the end of the function
 	std::vector<glm::vec4> allPoints;
@@ -50,12 +50,12 @@ std::vector<glm::vec4> Geometry::genSphere(std::vector<glm::vec4> points, unsign
 		for (int j = 0; j < points.size(); j++)
 		{
 			//We rotate and the X so X doesn't change.
-			float newX = points[j].x + Position[0];
+			float newX = points[j].x + position.x;
 			//We calculate y by multiplying the old Y by cosine of theta and then adding it to
 			//old Z multiplyed by negative sine of theta
-			float newY = points[j].y * cos(theta) + points[j].z * -sin(theta) + Position[1];
+			float newY = points[j].y * cos(theta) + points[j].z * -sin(theta) + position.y;
 			//In order to calculate Z we do the opposite of the above except sine is not negative.
-			float newZ = points[j].z * cos(theta) + points[j].y * sin(theta) + Position[2];
+			float newZ = points[j].z * cos(theta) + points[j].y * sin(theta) + position.z;
 			//We create a new point and give it the values we just calculated.
 			glm::vec4 point = glm::vec4(newX, newY, newZ, 1);
 			//We push the point onto the list of points.
@@ -104,10 +104,10 @@ std::vector<unsigned int> Geometry::genSphereIndices(unsigned int np, unsigned i
 std::vector<Vertex> Geometry::genPlane(int size)
 {
 	//We generate the top left ,top right, bot left, bot right points and then return them.
-	Vertex tl = Vertex(glm::vec4(-size, size, 0, 1), glm::vec4(1, 0, 0, 1));
-	Vertex tr = Vertex(glm::vec4(size, size, 0, 1), glm::vec4(1, 0, 0, 1));
-	Vertex bl = Vertex(glm::vec4(size, -size, 0, 1), glm::vec4(1, 0, 0, 1));
-	Vertex br = Vertex(glm::vec4(-size, -size, 0, 1), glm::vec4(1, 0, 0, 1));
+	Vertex tl = Vertex(glm::vec4(-size, size, 0, 1), glm::vec4(1, 0, 0, 1),glm::vec2(0,0));
+	Vertex tr = Vertex(glm::vec4(size, size, 0, 1), glm::vec4(1, 0, 0, 1), glm::vec2(0, 0));
+	Vertex bl = Vertex(glm::vec4(size, -size, 0, 1), glm::vec4(1, 0, 0, 1), glm::vec2(0, 0));
+	Vertex br = Vertex(glm::vec4(-size, -size, 0, 1), glm::vec4(1, 0, 0, 1), glm::vec2(0, 0));
 	std::vector<Vertex> vertices = { tl,tr,bl,br };
 	return vertices;
 }
@@ -122,30 +122,30 @@ std::vector<Vertex> Geometry::genCube(std::vector<Vertex> vertices)
 	//only need two points rather than four. 
 	std::vector<Vertex> verts;
 	//Front
-	verts.push_back(Vertex(glm::vec4(0, 1, 1, 1), glm::vec4(1)));//0
-	verts.push_back(Vertex(glm::vec4(1, 1, 1, 1), glm::vec4(1)));//1
-	verts.push_back(Vertex(glm::vec4(1, 0, 1, 1), glm::vec4(1)));//2
-	verts.push_back(Vertex(glm::vec4(0, 0, 1, 1), glm::vec4(1)));//3
+	verts.push_back(Vertex(glm::vec4(0, 1, 1, 1), glm::vec4(1), glm::vec2(0)));//0
+	verts.push_back(Vertex(glm::vec4(1, 1, 1, 1), glm::vec4(1), glm::vec2(0)));//1
+	verts.push_back(Vertex(glm::vec4(1, 0, 1, 1), glm::vec4(1), glm::vec2(0)));//2
+	verts.push_back(Vertex(glm::vec4(0, 0, 1, 1), glm::vec4(1), glm::vec2(0)));//3
 
 																 //Bot
-	verts.push_back(Vertex(glm::vec4(0, 0, 0, 1), glm::vec4(1)));//4
-	verts.push_back(Vertex(glm::vec4(1, 0, 0, 1), glm::vec4(1)));//5
+	verts.push_back(Vertex(glm::vec4(0, 0, 0, 1), glm::vec4(1), glm::vec2(0)));//4
+	verts.push_back(Vertex(glm::vec4(1, 0, 0, 1), glm::vec4(1), glm::vec2(0)));//5
 
 																 //Back
-	verts.push_back(Vertex(glm::vec4(1, 1, 0, 1), glm::vec4(1)));//6
-	verts.push_back(Vertex(glm::vec4(0, 1, 0, 1), glm::vec4(1)));//7
+	verts.push_back(Vertex(glm::vec4(1, 1, 0, 1), glm::vec4(1), glm::vec2(0)));//6
+	verts.push_back(Vertex(glm::vec4(0, 1, 0, 1), glm::vec4(1), glm::vec2(0)));//7
 
 																 //Top
-	verts.push_back(Vertex(glm::vec4(0, 1, 1, 1), glm::vec4(1)));//8
-	verts.push_back(Vertex(glm::vec4(1, 1, 1, 1), glm::vec4(1)));//9
+	verts.push_back(Vertex(glm::vec4(0, 1, 1, 1), glm::vec4(1), glm::vec2(0)));//8
+	verts.push_back(Vertex(glm::vec4(1, 1, 1, 1), glm::vec4(1), glm::vec2(0)));//9
 
 																 //Right
-	verts.push_back(Vertex(glm::vec4(1, 1, 0, 1), glm::vec4(1)));//10
-	verts.push_back(Vertex(glm::vec4(1, 0, 0, 1), glm::vec4(1)));//11
+	verts.push_back(Vertex(glm::vec4(1, 1, 0, 1), glm::vec4(1), glm::vec2(0)));//10
+	verts.push_back(Vertex(glm::vec4(1, 0, 0, 1), glm::vec4(1), glm::vec2(0)));//11
 
 																 //Left
-	verts.push_back(Vertex(glm::vec4(0, 1, 0, 1), glm::vec4(1)));//12
-	verts.push_back(Vertex(glm::vec4(0, 0, 0, 1), glm::vec4(1)));//13
+	verts.push_back(Vertex(glm::vec4(0, 1, 0, 1), glm::vec4(1), glm::vec2(0)));//12
+	verts.push_back(Vertex(glm::vec4(0, 0, 0, 1), glm::vec4(1), glm::vec2(0)));//13
 	return verts;
 }
 
