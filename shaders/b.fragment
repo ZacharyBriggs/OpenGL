@@ -11,7 +11,7 @@ uniform float diffuseCo;
 uniform float specularCo;
 void main() 
 {
-	vec3 Ldn = normalize(lightDir+lightPos);
+	vec3 Ldn = normalize(lightDir);
 	vec3 surfacePos = normalize(vPosition.xyz);
 	float lambert = max(0, dot(surfacePos, -Ldn));
 	
