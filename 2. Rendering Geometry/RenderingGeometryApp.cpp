@@ -38,7 +38,7 @@ void RenderingGeometryApp::startup()
 	std::vector<Vertex> vertices;
 	for (glm::vec4 point : spherePoints)
 	{
-		vertices.push_back(Vertex(point, glm::vec4(1, 1, 1, 1)));
+		vertices.push_back(Vertex(point, glm::vec4(1, 1, 1, 1),glm::vec2(0)));
 	}
 	glm::vec4 material = vertices[0].color;
 	mesh->initialize(indices, vertices);
