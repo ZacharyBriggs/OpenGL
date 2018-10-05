@@ -73,28 +73,24 @@ std::vector<unsigned int> Geometry::genSphereIndices(unsigned int np, unsigned i
 	//1 4	4 7
 	//0 3	3 6
 
-	//start represents which group of columns we're on.
-	unsigned int start;
-	//bot_left represents the left column.
-	unsigned int bot_left;
-	//bot_right represents the right column.
-	unsigned int bot_right;
+	unsigned int group;
+	unsigned int left_col;
+	unsigned int right_col;
 
 	for (int y = 0; y < nm; y++)
 	{
-		start = y * np;
+		group = y * np;
 
 		for (int j = 0; j < np; j++)
 		{
-			bot_left = start + j;
-			bot_right = bot_left + np;
+			left_col = group + j;
+			right_col = left_col + np;
 
 			//We alternate between bot_left and bot_right to get the pattern for the sphere indices.
 			//It'll look something like 0,3,1,4,2,5,etc.
-			indices.push_back(bot_left);
-			indices.push_back(bot_right);
+			indices.push_back(left_col);
+			indices.push_back(right_col);
 		}
-		//We push 0xFFFF to tell the program to restart the drawing of the triangle strip.
 		indices.push_back(0xFFFF);
 	}
 	return indices;

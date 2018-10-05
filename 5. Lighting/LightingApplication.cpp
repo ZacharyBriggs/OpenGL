@@ -29,7 +29,6 @@ void LightingApplication::startup()
 	mesh2 = new MeshRenderer();
 	lightSphere = new MeshRenderer();
 	defaultShader = new Shader();
-	geo = new Geometry();
 	DaLight = new DirectionalLight();
 	DaLight->color = glm::vec4(0, .5, 0, 1);
 	DaLight->direction = glm::vec3(0, 1, 0);

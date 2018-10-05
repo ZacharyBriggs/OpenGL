@@ -43,6 +43,8 @@ int MeshRenderer::create_buffers()
 	glGenVertexArrays(1, &m_vao);
 	glGenBuffers(1, &m_vbo);
 	glGenBuffers(1, &m_ibo);
+	glGenBuffers(1, &m_nbo);
+	glGenBuffers(1, &m_ubo);
 
 	//Bind vao to the vertex array and then give it the vertices of the geometry to render
 	glBindVertexArray(m_vao);
@@ -52,6 +54,8 @@ int MeshRenderer::create_buffers()
 	//Bind ibo to the array buffer and give it the indices of the geometry we want to render
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), m_indices.data(), GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_nbo);
 
 	//Enable the vertex array of the index at 0
 	glEnableVertexAttribArray(0);

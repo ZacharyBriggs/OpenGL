@@ -16,7 +16,8 @@ private:
 	std::vector<Vertex> m_vertices;
 	unsigned int m_ibo;
 	unsigned int m_vbo;
+	unsigned int m_nbo;
+	unsigned int m_ubo;
 	unsigned int m_vao;
 	int create_buffers();
 };
-
