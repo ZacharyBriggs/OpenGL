@@ -38,8 +38,6 @@ void Shader::load(const char * filename, unsigned int type)
 	err = fopen_s(&fp, filename, "r");
 	//We make a buffer of sufficent size to store all the data.
 	char buf[500];
-	//A string to appened the buffered data to.
-	std::string str;
 	//Open the file and loop through while there is data in the file that hasn't been buffered.
 	while (std::fgets(buf, sizeof buf, fp))
 	{

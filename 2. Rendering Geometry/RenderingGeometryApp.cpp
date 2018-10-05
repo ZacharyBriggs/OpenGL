@@ -6,7 +6,7 @@
 #include <glm/glm/ext.hpp>
 #include "gl_core_4_4.h"
 
-
+glm::vec3 pos = glm::vec3(0);
 
 RenderingGeometryApp::RenderingGeometryApp():m_model(glm::mat4(1))
 {
@@ -32,9 +32,9 @@ void RenderingGeometryApp::startup()
 	//gen sphere
 	int nm = 51;
 	int np = 50;
-	std::vector<glm::vec4> points = geo->genHalfCircle(np,5);
-	std::vector<glm::vec4> spherePoints = geo->genSphere(points, nm);
-	std::vector<unsigned int> indices = geo->genSphereIndices(np, nm);
+	std::vector<glm::vec4> points = Geometry::genHalfCircle(np,5);
+	std::vector<glm::vec4> spherePoints = Geometry::genSphere(points, nm, pos);
+	std::vector<unsigned int> indices = Geometry::genSphereIndices(np, nm);
 	std::vector<Vertex> vertices;
 	for (glm::vec4 point : spherePoints)
 	{
