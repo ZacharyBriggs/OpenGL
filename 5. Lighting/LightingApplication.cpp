@@ -12,6 +12,7 @@ float aC = 1;
 float dC = 1;
 float sC = 1;
 float rt = 0;
+glm::vec3 pos = glm::vec3(0);
 
 LightingApplication::LightingApplication()
 {
@@ -41,44 +42,51 @@ void LightingApplication::startup()
 	std::vector<unsigned int> indices = {0,1,2,3,0};*/
 
 	//gen sphere
-	int nm = 51;
-	int np = 50;
-	geo->Position[0] = -7;
-	geo->Position[1] = 0;
+	int nm = 11;
+	int np = 10;
+	pos = glm::vec3(-7, 0, 0);
 	std::vector<glm::vec4> points = geo->genHalfCircle(np, 5);
-	std::vector<glm::vec4> spherePoints = geo->genSphere(points, nm);
+	std::vector<glm::vec4> spherePoints = geo->genSphere(points, nm, pos);
 	std::vector<unsigned int> indices = geo->genSphereIndices(np, nm);
 	std::vector<Vertex> vertices;
-	for (glm::vec4 point : spherePoints)
+	std::vector<glm::vec2> daUV;
+	float V = 0;
+	for (int i = 0; i<2; i++)
 	{
-		vertices.push_back(Vertex(point, glm::vec4(1, 1, 1, 1)));
+		for (int j = 0; j < spherePoints.size()/2; j++)
+		{
+			daUV.push_back(glm::vec2((float)j/(spherePoints.size()/2),V));
+		}
+		V++;
+	}
+	for (int i = 0; i < spherePoints.size(); i++)
+	{
+		vertices.push_back(Vertex(spherePoints[i], glm::vec4(1, 1, 1, 1), daUV[i]));
 	}
 	nm = 51;
 	np = 50;
-	geo->Position[0] = 7;
-	geo->Position[1] = 0;
-	std::vector<glm::vec4> points2 = geo->genHalfCircle(np, 5);
-	std::vector<glm::vec4> spherePoints2 = geo->genSphere(points2, nm);
-	std::vector<unsigned int> indices2 = geo->genSphereIndices(np, nm);
+	pos = glm::vec3(7, 0, 0);
+	std::vector<glm::vec4> points2 = Geometry::genHalfCircle(np, 5);
+	std::vector<glm::vec4> spherePoints2 = Geometry::genSphere(points2, nm, pos);
+	std::vector<unsigned int> indices2 = Geometry::genSphereIndices(np, nm);
 	std::vector<Vertex> vertices2;
 	for (glm::vec4 point : spherePoints2)
 	{
-		vertices2.push_back(Vertex(point, glm::vec4(1, 1, 1, 1)));
+		vertices2.push_back(Vertex(point, glm::vec4(1, 1, 1, 1),glm::vec2(0)));
 	}
 
 	nm = 12;
 	np = 11;
-	geo->Position[0] = 0;
-	geo->Position[1] = 10;
-	std::vector<glm::vec4> points3 = geo->genHalfCircle(np, 2);
-	std::vector<glm::vec4> spherePoints3 = geo->genSphere(points3, nm);
-	std::vector<unsigned int> indices3 = geo->genSphereIndices(np, nm);
+	pos = glm::vec3(0, 10, 0);
+	std::vector<glm::vec4> points3 = Geometry::genHalfCircle(np, 2);
+	std::vector<glm::vec4> spherePoints3 = Geometry::genSphere(points3, nm, pos);
+	std::vector<unsigned int> indices3 = Geometry::genSphereIndices(np, nm);
 	std::vector<Vertex> vertices3;
 	for (glm::vec4 point : spherePoints3)
 	{
-		vertices3.push_back(Vertex(point, glm::vec4(1, 1, 1, 1)));
+		vertices3.push_back(Vertex(point, glm::vec4(1, 1, 1, 1),glm::vec2(0)));
 	}
-	DaLight->pos = glm::vec3(geo->Position[0], geo->Position[1], 0);
+	DaLight->pos = glm::vec3(pos.x, pos.y, pos.z);
 	DaLight->direction = glm::vec3(0, -3, 0);
 	glm::vec4 material = vertices[0].color;
 	mesh->initialize(indices, vertices);
@@ -100,16 +108,23 @@ void LightingApplication::update(float dt)
 	int nm = 12;
 	int np = 11;
 	std::vector<glm::vec4> points3 = geo->genHalfCircle(np, 2);
-	std::vector<glm::vec4> spherePoints3 = geo->genSphere(points3, nm);
+	std::vector<glm::vec4> spherePoints3 = geo->genSphere(points3, nm,pos);
 	std::vector<unsigned int> indices3 = geo->genSphereIndices(np, nm);
 	std::vector<Vertex> vertices3;
 	for (glm::vec4 point : spherePoints3)
 	{
-		vertices3.push_back(Vertex(point, glm::vec4(1, 1, 1, 1),));
+		vertices3.push_back(Vertex(point, glm::vec4(1, 1, 1, 1),glm::vec2(0)));
 	}
 
-
-	DaLight->pos = glm::vec3(geo->Position[0], geo->Position[1], 0);
+	if (glfwGetKey(m_window, GLFW_KEY_UP))
+		pos.y += 0.1;
+	if (glfwGetKey(m_window, GLFW_KEY_DOWN))
+		pos.y -= 0.1;
+	if (glfwGetKey(m_window, GLFW_KEY_RIGHT))
+		pos.x += 0.1;
+	if (glfwGetKey(m_window, GLFW_KEY_LEFT))
+		pos.x -= 0.1;
+	DaLight->pos = glm::vec3(pos.x, pos.y, pos.z);
 	lightSphere->initialize(indices3, vertices3);
 	glfwSetWindowUserPointer(m_window, this);
 	glfwSetKeyCallback(m_window, key_callback);
@@ -119,17 +134,8 @@ void LightingApplication::update(float dt)
 void LightingApplication::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	LightingApplication* instance = (LightingApplication*)glfwGetWindowUserPointer(window);
-	Geometry* geo = instance->geo;
 	if (action == GLFW_PRESS)
 	{
-		if (key == GLFW_KEY_UP)
-			geo->Position[1] += 0.1;
-		if (key == GLFW_KEY_DOWN)
-			geo->Position[1] -= 0.1;
-		if (key == GLFW_KEY_RIGHT)
-			geo->Position[0] += 0.1;
-		if (key == GLFW_KEY_LEFT)
-			geo->Position[0] -= 0.1;
 		if (key == GLFW_KEY_1)
 			aC == 1 ? aC = 0 : aC = 1;
 		if (key == GLFW_KEY_2)
@@ -137,7 +143,6 @@ void LightingApplication::key_callback(GLFWwindow* window, int key, int scancode
 		if (key == GLFW_KEY_3)
 			sC == 1 ? sC = 0 : sC = 1;
 	}
-
 }
 
 void LightingApplication::draw()
