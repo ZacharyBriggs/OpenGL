@@ -27,7 +27,37 @@ void Camera::setPerspective(float fov, float aspectRatio, float near, float far)
 
 void Camera::setLookAt(glm::vec3 from, glm::vec3 to, glm::vec3 up)
 {
-	viewTransform = glm::lookAt(from, to, up);
+	//from is the camera's position
+	//to is what you want the camera to look at
+	//up is which the direction the camera will consider above it
+	//the view matrix looks like 
+	//   right.x,   right.y,   right.z, 0	X-Axis
+	//      up.x,      up.y,      up.z, 0	Y-Axis
+	// forward.x, forward.y, forward.z, 0	Z-Axis
+	//    from.x,    from.y,    from.z, 1	Position
+
+	//forward is the direcion from the camera to the position we're looking at
+	glm::vec3 forward = glm::normalize(from - to);
+	//We give up as an argument in the function
+	glm::vec3 upNormal = glm::normalize(up);
+	//since we know the other 2 axes we can get the third with cross product
+	glm::vec3 right = glm::cross(forward, upNormal);
+	viewTransform[0].x = right.x;
+	viewTransform[0].y = right.y;
+	viewTransform[0].z = right.z;
+	viewTransform[0].w = 0;
+	viewTransform[1].x = upNormal.x;
+	viewTransform[1].y = upNormal.y;
+	viewTransform[1].z = upNormal.z;
+	viewTransform[1].w = 0;
+	viewTransform[2].x = forward.x;
+	viewTransform[2].y = forward.y;
+	viewTransform[2].z = forward.z;
+	viewTransform[2].w = 0;
+	viewTransform[3].x = from.x;
+	viewTransform[3].y = from.y;
+	viewTransform[3].z = from.z;
+	viewTransform[3].w = 1;
 }
 
 void Camera::setPosition(glm::vec3 position)
