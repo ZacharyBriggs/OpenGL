@@ -38,6 +38,7 @@
     <ClInclude Include="include\stb_truetype.h" />
     <ClInclude Include="include\Transform.h" />
     <ClInclude Include="include\Vertex.h" />
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
@@ -56,6 +57,7 @@
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="src\Vertex.cpp" />
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

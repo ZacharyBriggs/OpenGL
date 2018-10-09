@@ -10,6 +10,7 @@ public:
 	FlyCamera();
 	~FlyCamera();
 	void update(GLFWwindow* window,float dt);
+	void rotate(float radians, glm::vec3 axis);
 	void setSpeed(float value);
 private:
 	float speed;
