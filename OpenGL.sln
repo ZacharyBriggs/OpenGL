@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "4.Camera", "4.Camera\4.Came
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "5. Lighting", "5. Lighting\5. Lighting.vcxproj", "{F52E8759-F4F2-43ED-BE95-2955002176BC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "6. Textures", "6. Textures\6. Textures.vcxproj", "{1A7D2706-6102-497C-B9BE-8B96AFBB1C7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{F52E8759-F4F2-43ED-BE95-2955002176BC}.Release|x64.Build.0 = Release|x64
 		{F52E8759-F4F2-43ED-BE95-2955002176BC}.Release|x86.ActiveCfg = Release|Win32
 		{F52E8759-F4F2-43ED-BE95-2955002176BC}.Release|x86.Build.0 = Release|Win32
+		{1A7D2706-6102-497C-B9BE-8B96AFBB1C7A}.Debug|x64.ActiveCfg = Debug|x64
+		{1A7D2706-6102-497C-B9BE-8B96AFBB1C7A}.Debug|x64.Build.0 = Debug|x64
+		{1A7D2706-6102-497C-B9BE-8B96AFBB1C7A}.Debug|x86.ActiveCfg = Debug|Win32
+		{1A7D2706-6102-497C-B9BE-8B96AFBB1C7A}.Debug|x86.Build.0 = Debug|Win32
+		{1A7D2706-6102-497C-B9BE-8B96AFBB1C7A}.Release|x64.ActiveCfg = Release|x64
+		{1A7D2706-6102-497C-B9BE-8B96AFBB1C7A}.Release|x64.Build.0 = Release|x64
+		{1A7D2706-6102-497C-B9BE-8B96AFBB1C7A}.Release|x86.ActiveCfg = Release|Win32
+		{1A7D2706-6102-497C-B9BE-8B96AFBB1C7A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
