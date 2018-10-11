@@ -11,7 +11,6 @@ Texture::Texture()
 	m_width = 0;
 	m_height = 0;
 	m_glHandle = 0;
-	m_format = 0;
 	m_loadedPixels = nullptr;
 }
 
@@ -21,7 +20,6 @@ Texture::Texture(const char * filename)
 	m_width = 0;
 	m_height = 0;
 	m_glHandle = 0;
-	m_format = 0;
 	m_loadedPixels = nullptr;
 }
 
@@ -64,6 +62,11 @@ void Texture::create(unsigned int width, unsigned int height, unsigned char * pi
 
 void Texture::bind(unsigned int slot) const
 {
+	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, m_glHandle);
+}
+
+void Texture::unbind(unsigned int slot) const
+{
 }
 
