@@ -7,6 +7,7 @@
 #include <glm/glm/ext.hpp>
 #include "gl_core_4_4.h"
 #include <GLFW/glfw3.h>
+#include <vector>
 
 float aC = 1;
 float dC = 1;
@@ -62,35 +63,12 @@ void LightingApplication::startup()
 	{
 		vertices.push_back(Vertex(spherePoints[i], glm::vec4(1, 1, 1, 1), daUV[i]));
 	}
-	nm = 51;
-	np = 50;
-	pos = glm::vec3(7, 0, 0);
-	std::vector<glm::vec4> points2 = Geometry::genHalfCircle(np, 5);
-	std::vector<glm::vec4> spherePoints2 = Geometry::genSphere(points2, nm, pos);
-	std::vector<unsigned int> indices2 = Geometry::genSphereIndices(np, nm);
-	std::vector<Vertex> vertices2;
-	for (glm::vec4 point : spherePoints2)
-	{
-		vertices2.push_back(Vertex(point, glm::vec4(1, 1, 1, 1),glm::vec2(0)));
-	}
 
-	nm = 12;
-	np = 11;
-	pos = glm::vec3(0, 10, 0);
-	std::vector<glm::vec4> points3 = Geometry::genHalfCircle(np, 2);
-	std::vector<glm::vec4> spherePoints3 = Geometry::genSphere(points3, nm, pos);
-	std::vector<unsigned int> indices3 = Geometry::genSphereIndices(np, nm);
-	std::vector<Vertex> vertices3;
-	for (glm::vec4 point : spherePoints3)
-	{
-		vertices3.push_back(Vertex(point, glm::vec4(1, 1, 1, 1),glm::vec2(0)));
-	}
 	DaLight->pos = glm::vec3(pos.x, pos.y, pos.z);
 	DaLight->direction = glm::vec3(0, -3, 0);
 	glm::vec4 material = vertices[0].color;
 	mesh->initialize(indices, vertices);
-	mesh2->initialize(indices2, vertices2);
-	lightSphere->initialize(indices3, vertices3);
+
 }
 
 void LightingApplication::update(float dt)
@@ -104,17 +82,6 @@ void LightingApplication::update(float dt)
 	m_projection = glm::perspective(glm::quarter_pi<float>(), 800 / (float)600, 0.1f, 1000.f);
 	m_model = glm::mat4(1) * rot;
 	m_model = glm::mat4(1);
-	int nm = 12;
-	int np = 11;
-	std::vector<glm::vec4> points3 = geo->genHalfCircle(np, 2);
-	std::vector<glm::vec4> spherePoints3 = geo->genSphere(points3, nm,pos);
-	std::vector<unsigned int> indices3 = geo->genSphereIndices(np, nm);
-	std::vector<Vertex> vertices3;
-	for (glm::vec4 point : spherePoints3)
-	{
-		vertices3.push_back(Vertex(point, glm::vec4(1, 1, 1, 1),glm::vec2(0)));
-	}
-
 	if (glfwGetKey(m_window, GLFW_KEY_UP))
 		pos.y += 0.1;
 	if (glfwGetKey(m_window, GLFW_KEY_DOWN))
@@ -124,7 +91,6 @@ void LightingApplication::update(float dt)
 	if (glfwGetKey(m_window, GLFW_KEY_LEFT))
 		pos.x -= 0.1;
 	DaLight->pos = glm::vec3(pos.x, pos.y, pos.z);
-	lightSphere->initialize(indices3, vertices3);
 	glfwSetWindowUserPointer(m_window, this);
 	glfwSetKeyCallback(m_window, key_callback);
 	

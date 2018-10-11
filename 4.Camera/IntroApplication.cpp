@@ -1,5 +1,4 @@
 #include "IntroApplication.h"
-#include <utility>
 #include "Gizmos.h"
 #include "glfw/glfw3.h"
 

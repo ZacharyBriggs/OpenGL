@@ -24,8 +24,10 @@ void Application::run(const char * title, unsigned int width, unsigned int heigh
 	glEnable(GL_DEPTH_TEST);
 	ImGui_ImplGlfwGL3_Init(m_window, true);
 	startup();
+	auto loopcount = 1;
 	while (glfwWindowShouldClose(m_window) == false && glfwGetKey(m_window, GLFW_KEY_ESCAPE) != GLFW_PRESS)
 	{
+		loopcount++;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//clear frame buffer
 		double glfwTime = glfwGetTime();
 

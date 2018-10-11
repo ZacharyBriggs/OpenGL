@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include "Geometry.h"
 #include "MeshRenderer.h"
+#include "Texture.h"
 #include "DirectionalLight.h"
 #include <glm/glm/ext.hpp>
 #include "gl_core_4_4.h"
@@ -26,27 +27,27 @@ void TextureApplication::startup()
 	mesh = new MeshRenderer();
 	defaultShader = new Shader();
 	DaLight = new DirectionalLight();
+	tex = new Texture("textures/cloud.png");
 	DaLight->color = glm::vec4(0, .5, 0, 1);
 	DaLight->direction = glm::vec3(0, 1, 0);
 	DaLight->pos = glm::vec3(0, -1, 0);
-	defaultShader->load("d.vertex", 0);
-	defaultShader->load("b.fragment", 1);
+	defaultShader->load("shaders/texVert.vertex", 0);
+	defaultShader->load("shaders/texFrag.fragment", 1);
 	defaultShader->attach();
-
-	int nm = 11;
-	int np = 10;
-	pos = glm::vec3(-7, 0, 0);
+	int nm = 21;
+	int np = 20;
+	pos = glm::vec3(0, 0, 0);
 	std::vector<glm::vec4> points = geo->genHalfCircle(np, 5);
 	std::vector<glm::vec4> spherePoints = geo->genSphere(points, nm, pos);
 	std::vector<unsigned int> indices = geo->genSphereIndices(np, nm);
 	std::vector<Vertex> vertices;
 	std::vector<glm::vec2> daUV;
 	float V = 0;
-	for (int i = 0; i<2; i++)
+	for (int i = 0; i <= nm; i++)
 	{
-		for (int j = 0; j < spherePoints.size() / 2; j++)
+		for (int j = 0; j < np; j++)
 		{
-			daUV.push_back(glm::vec2((float)j / (spherePoints.size() / 2), V));
+			daUV.push_back(glm::vec2((i / (float)np), j / ((float)nm - 1)));
 		}
 		V++;
 	}
@@ -58,6 +59,7 @@ void TextureApplication::startup()
 	DaLight->direction = glm::vec3(0, -3, 0);
 	glm::vec4 material = vertices[0].color;
 	mesh->initialize(indices, vertices);
+	
 }
 
 void TextureApplication::shutdown()
@@ -103,26 +105,15 @@ void TextureApplication::update(float dt)
 void TextureApplication::draw()
 {
 	defaultShader->bind();
+	tex->bind(0);
 	int handle = defaultShader->getUniform("ProjectionViewWorld");
-	int lightColorHandle = defaultShader->getUniform("lightColor");
-	int lightPosHandle = defaultShader->getUniform("lightPos");
-	int lightDirHandle = defaultShader->getUniform("lightDir");
-	int CameraPosHandle = defaultShader->getUniform("cameraPos");
-	int ambientCoHandle = defaultShader->getUniform("ambientCo");
-	int diffuseCoHandle = defaultShader->getUniform("diffuseCo");
-	int specularCoHandle = defaultShader->getUniform("specularCo");
+	int textureHandle = defaultShader->getUniform("textureSampler");
 	glm::mat4 mvp = m_projection * m_view * m_model;
-
+	auto texPos = glm::vec2(0, 0);
+	glUniform2fv(textureHandle,1,&texPos[0]);
 	glUniformMatrix4fv(handle, 1, GL_FALSE, &mvp[0][0]);
 	glm::vec3 col = DaLight->color;
-	glUniform3fv(lightColorHandle, 1, &col[0]);
-	glUniform3fv(lightPosHandle, 1, &DaLight->pos[0]);
-	glUniform3fv(lightDirHandle, 1, &DaLight->direction[0]);
 	glm::vec3 view = glm::vec3(0, -10, 20);
-	glUniform3fv(CameraPosHandle, 1, &view[0]);
-	glUniform1fv(ambientCoHandle, 1, &aC);
-	glUniform1fv(diffuseCoHandle, 1, &dC);
-	glUniform1fv(specularCoHandle, 1, &sC);
 	mesh->render();
 	defaultShader->unbind();
 }

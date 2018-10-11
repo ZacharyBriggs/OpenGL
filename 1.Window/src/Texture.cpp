@@ -21,6 +21,7 @@ Texture::Texture(const char * filename)
 	m_height = 0;
 	m_glHandle = 0;
 	m_loadedPixels = nullptr;
+	load(filename);
 }
 
 Texture::Texture(unsigned int width, unsigned int height, unsigned char * pixels)
@@ -42,7 +43,7 @@ bool Texture::load(const char * filename)
 	int y = 0;
 	int comp = 0;
 	//This throws an error if you try to pass in m_width and m_height instead of x and y
-	stbi_load(filename,&x,&y,&comp,STBI_default);
+	m_loadedPixels = stbi_load(filename,&x,&y,&comp,STBI_default);
 	glGenTextures(1, &m_glHandle);
 	glBindTexture(GL_TEXTURE_2D, m_glHandle);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x, y,0, GL_RGBA, GL_UNSIGNED_BYTE, m_loadedPixels);

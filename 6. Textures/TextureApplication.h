@@ -6,6 +6,7 @@ class MeshRenderer;
 class Shader;
 class DirectionalLight;
 class Geometry;
+class Texture;
 class TextureApplication : public Application
 {
 	typedef void(*KeyFunc)(GLFWwindow *window, int key, int scancode, int action, int mods);
@@ -16,6 +17,7 @@ public:
 	Shader* defaultShader;
 	Geometry* geo;
 	DirectionalLight* DaLight;
+	Texture* tex;
 	glm::mat4 m_model;
 	glm::mat4 m_view;
 	glm::mat4 m_projection;

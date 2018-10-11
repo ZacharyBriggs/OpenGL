@@ -18,6 +18,8 @@ int MeshRenderer::initialize(std::vector<unsigned int>& indices, std::vector<Ver
 	m_ibo = 0;
 	m_vbo = 0;
 	m_vao = 0;
+	m_nbo = 0;
+	m_ubo = 0;
 	m_vertices = verticies;
 	m_indices = indices;
 	create_buffers();
@@ -53,9 +55,7 @@ int MeshRenderer::create_buffers()
 
 	//Bind ibo to the array buffer and give it the indices of the geometry we want to render
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), m_indices.data(), GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ARRAY_BUFFER, m_nbo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), m_indices.data(), GL_STATIC_DRAW);;
 
 	//Enable the vertex array of the index at 0
 	glEnableVertexAttribArray(0);
@@ -69,7 +69,7 @@ int MeshRenderer::create_buffers()
 	glVertexAttribPointer(2, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)(sizeof(glm::vec4)*2));
 
 	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)(sizeof(glm::vec4)*3));
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)(sizeof(glm::vec4)*3));
 
 	//Unbind everything that was bound
 	glBindVertexArray(0);
