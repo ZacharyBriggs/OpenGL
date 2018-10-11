@@ -11,6 +11,7 @@ Texture::Texture()
 	m_width = 0;
 	m_height = 0;
 	m_glHandle = 0;
+	m_format = 0;
 	m_loadedPixels = nullptr;
 }
 
@@ -20,6 +21,7 @@ Texture::Texture(const char * filename)
 	m_width = 0;
 	m_height = 0;
 	m_glHandle = 0;
+	m_format = 0;
 	m_loadedPixels = nullptr;
 	load(filename);
 }
@@ -30,6 +32,7 @@ Texture::Texture(unsigned int width, unsigned int height, unsigned char * pixels
 	m_width = width;
 	m_height = height;
 	m_glHandle = 0;
+	m_format = 0;
 	m_loadedPixels = pixels;
 }
 
@@ -46,7 +49,29 @@ bool Texture::load(const char * filename)
 	m_loadedPixels = stbi_load(filename,&x,&y,&comp,STBI_default);
 	glGenTextures(1, &m_glHandle);
 	glBindTexture(GL_TEXTURE_2D, m_glHandle);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x, y,0, GL_RGBA, GL_UNSIGNED_BYTE, m_loadedPixels);
+	switch (comp) {
+	case STBI_grey:
+		m_format = RED;
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, x, y,
+			0, GL_RED, GL_UNSIGNED_BYTE, m_loadedPixels);
+		break;
+	case STBI_grey_alpha:
+		m_format = RG;
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RG, x, y,
+			0, GL_RG, GL_UNSIGNED_BYTE, m_loadedPixels);
+		break;
+	case STBI_rgb:
+		m_format = RGB;
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, x, y,
+			0, GL_RGB, GL_UNSIGNED_BYTE, m_loadedPixels);
+		break;
+	case STBI_rgb_alpha:
+		m_format = RGBA;
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x, y,
+			0, GL_RGBA, GL_UNSIGNED_BYTE, m_loadedPixels);
+		break;
+	default:	break;
+	};
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glGenerateMipmap(GL_TEXTURE_2D);

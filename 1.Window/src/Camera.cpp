@@ -43,8 +43,16 @@ void Camera::setLookAt(glm::vec3 from, glm::vec3 to, glm::vec3 up)
 	//We give up as an argument in the function
 	glm::vec3 upNormal = glm::normalize(glm::cross(forward, right));
 
-	glm::mat4 V = glm::mat4(right.x, right.y, right.z, 0, upNormal.x, upNormal.y, upNormal.z, 0, forward.x, forward.y, forward.z, 0, 0, 0, 0, 1);
-	glm::mat4 T = glm::mat4(glm::vec4(1, 0, 0, 0), glm::vec4(0, 1, 0, 0), glm::vec4(0, 0, 1, 0), glm::vec4(from, 1));
+	glm::mat4 V = glm::mat4(
+		right.x,	right.y,	right.z,	0, 
+		upNormal.x,	upNormal.y,	upNormal.z, 0, 
+		forward.x,	forward.y,	forward.z,	0, 
+		0,			0,			0,			1);
+	glm::mat4 T = glm::mat4(
+		glm::vec4(1, 0, 0, 0), 
+		glm::vec4(0, 1, 0, 0), 
+		glm::vec4(0, 0, 1, 0), 
+		glm::vec4(from   , 1));
 	
 	viewTransform = V*T;
 }

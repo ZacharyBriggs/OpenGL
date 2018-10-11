@@ -27,7 +27,7 @@ void TextureApplication::startup()
 	mesh = new MeshRenderer();
 	defaultShader = new Shader();
 	DaLight = new DirectionalLight();
-	tex = new Texture("textures/cloud.png");
+	tex = new Texture("textures/moon.png");
 	DaLight->color = glm::vec4(0, .5, 0, 1);
 	DaLight->direction = glm::vec3(0, 1, 0);
 	DaLight->pos = glm::vec3(0, -1, 0);
@@ -59,7 +59,6 @@ void TextureApplication::startup()
 	DaLight->direction = glm::vec3(0, -3, 0);
 	glm::vec4 material = vertices[0].color;
 	mesh->initialize(indices, vertices);
-	
 }
 
 void TextureApplication::shutdown()

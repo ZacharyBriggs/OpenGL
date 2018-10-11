@@ -101,9 +101,9 @@ std::vector<Vertex> Geometry::genPlane(int size)
 {
 	//We generate the top left ,top right, bot left, bot right points and then return them.
 	Vertex tl = Vertex(glm::vec4(-size, size, 0, 1), glm::vec4(1, 0, 0, 1),glm::vec2(0,0));
-	Vertex tr = Vertex(glm::vec4(size, size, 0, 1), glm::vec4(1, 0, 0, 1), glm::vec2(0, 0));
-	Vertex bl = Vertex(glm::vec4(size, -size, 0, 1), glm::vec4(1, 0, 0, 1), glm::vec2(0, 0));
-	Vertex br = Vertex(glm::vec4(-size, -size, 0, 1), glm::vec4(1, 0, 0, 1), glm::vec2(0, 0));
+	Vertex tr = Vertex(glm::vec4(size, size, 0, 1), glm::vec4(1, 0, 0, 1), glm::vec2(1, 0));
+	Vertex bl = Vertex(glm::vec4(size, -size, 0, 1), glm::vec4(1, 0, 0, 1), glm::vec2(1, 1));
+	Vertex br = Vertex(glm::vec4(-size, -size, 0, 1), glm::vec4(1, 0, 0, 1), glm::vec2(0, 1));
 	std::vector<Vertex> vertices = { tl,tr,bl,br };
 	return vertices;
 }

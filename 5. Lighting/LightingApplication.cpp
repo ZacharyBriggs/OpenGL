@@ -32,22 +32,22 @@ void LightingApplication::startup()
 	defaultShader = new Shader();
 	DaLight = new DirectionalLight();
 	DaLight->color = glm::vec4(0, .5, 0, 1);
-	DaLight->direction = glm::vec3(0, 1, 0);
+	DaLight->direction = glm::vec3(0, -1, 0);
 	DaLight->pos = glm::vec3(0, -1, 0);
-	defaultShader->load("d.vertex", 0);
-	defaultShader->load("b.fragment", 1);
+	defaultShader->load("shaders/d.vertex", 0);
+	defaultShader->load("shaders/b.fragment", 1);
 	defaultShader->attach();
 
 	/*std::vector<Vertex> vertices = genPlane(5);
 	std::vector<unsigned int> indices = {0,1,2,3,0};*/
 
 	//gen sphere
-	int nm = 11;
-	int np = 10;
-	pos = glm::vec3(-7, 0, 0);
-	std::vector<glm::vec4> points = geo->genHalfCircle(np, 5);
-	std::vector<glm::vec4> spherePoints = geo->genSphere(points, nm, pos);
-	std::vector<unsigned int> indices = geo->genSphereIndices(np, nm);
+	int nm = 21;
+	int np = 20;
+	pos = glm::vec3(0, 0, 0);
+	std::vector<glm::vec4> points = Geometry::genHalfCircle(np, 5);
+	std::vector<glm::vec4> spherePoints = Geometry::genSphere(points, nm, pos);
+	std::vector<unsigned int> indices = Geometry::genSphereIndices(np, nm);
 	std::vector<Vertex> vertices;
 	std::vector<glm::vec2> daUV;
 	float V = 0;

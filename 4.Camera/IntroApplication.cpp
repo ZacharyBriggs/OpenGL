@@ -33,7 +33,6 @@ void IntroApplication::shutdown()
 
 void IntroApplication::update(float dt)
 {
-	trans->Rotate(90, glm::vec3(0, 1, 0));
 	cam->update(m_window, dt);
 }
 

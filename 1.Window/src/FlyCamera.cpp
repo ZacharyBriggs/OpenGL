@@ -4,7 +4,7 @@
 
 FlyCamera::FlyCamera()
 {
-	speed = 1;
+	speed = 0.25;
 }
 
 
@@ -16,31 +16,35 @@ void FlyCamera::update(GLFWwindow* window,float dt)
 {
 	if(glfwGetKey(window,GLFW_KEY_W))
 	{
-		Camera::setPosition(glm::vec3(0, -speed*dt, 0));
+		Camera::setPosition(glm::vec3(0, -speed, 0));
 	}
 	if (glfwGetKey(window, GLFW_KEY_A))
 	{
-		Camera::setPosition(glm::vec3(speed*dt, 0, 0));
+		Camera::setPosition(glm::vec3(-speed, 0, 0));
 	}
 	if (glfwGetKey(window, GLFW_KEY_S))
 	{
-		Camera::setPosition(glm::vec3(0, speed * dt, 0));
+		Camera::setPosition(glm::vec3(0, speed, 0));
 	}
 	if (glfwGetKey(window, GLFW_KEY_D))
 	{
-		Camera::setPosition(glm::vec3(-speed*dt, 0, 0));
+		Camera::setPosition(glm::vec3(speed, 0, 0));
 	}
 	if (glfwGetKey(window, GLFW_KEY_RIGHT))
 	{
-		rotate(1, glm::vec3(0, 1, 0));
+		rotate(.10, glm::vec3(0, 1, 0));
 	}
 	if (glfwGetKey(window, GLFW_KEY_LEFT))
 	{
-		rotate(1, glm::vec3(0, -1, 0));
+		rotate(-0.10, glm::vec3(0, 1, 0));
 	}
 	if (glfwGetKey(window, GLFW_KEY_UP))
 	{
-		rotate(1, glm::vec3(1, 0, 0));
+		rotate(.10, glm::vec3(1, 0, 0));
+	}
+	if (glfwGetKey(window, GLFW_KEY_DOWN))
+	{
+		rotate(-0.10, glm::vec3(1, 0, 0));
 	}
 }
 
@@ -75,7 +79,7 @@ void FlyCamera::rotate(float radians, glm::vec3 axis)
 		x_Axis.z, y_Axis.z, z_Axis.z, 0,
 		0, 0, 0, 1
 	);
-	worldTransform *= rotation;
+	viewTransform *= rotation;
 }
 
 void FlyCamera::setSpeed(float value)

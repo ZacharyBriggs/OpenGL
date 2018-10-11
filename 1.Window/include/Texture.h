@@ -3,6 +3,12 @@
 class Texture
 {
 public:
+	enum Format : unsigned int {
+		RED = 1,
+		RG,
+		RGB,
+		RGBA
+	};
 	Texture();
 	~Texture();
 	Texture(const char* filename);
@@ -34,6 +40,7 @@ protected:
 	unsigned int	m_width;
 	unsigned int	m_height;
 	unsigned int	m_glHandle;
+	unsigned int	m_format;
 	unsigned char*	m_loadedPixels;
 };
 

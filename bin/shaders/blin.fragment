@@ -1,32 +1,36 @@
 #version 410
 in vec4 vColor;
 in vec4 vPosition;
+in vec4 vNormal;
+in vec2 vUV;
 out vec4 FragColor;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 lightDir;
 uniform vec3 cameraPos;
+uniform float ambientCo;
+uniform float diffuseCo;
+uniform float specularCo;
 void main() 
 {
 	vec3 Ldn = normalize(lightDir);
-	vec3 surfacePos = normalize(vPosition.xyz);
-	float lambert = max(0, dot(surfacePos, -Ldn));
+	vec3 surfacePos = vNormal.xyz;
+	float lambert = max(0, dot(surfacePos, Ldn));
 	
 	vec3 viewRay = cameraPos - vPosition.xyz;
 	viewRay = normalize(viewRay);
 	vec3 reflectedRay = reflect(Ldn, surfacePos);
-	reflectedRay = reflectedRay;
 	reflectedRay = normalize(reflectedRay);
 	
-	vec4 ambient = vColor * vec4(lightColor, 1);
-	vec4 diffuse = vColor * lambert * vec4(lightColor, 1);
+	vec4 ambient = vColor * vec4(lightColor, 1)*ambientCo;
+	vec4 diffuse = vColor * lambert * vec4(lightColor, 1)*diffuseCo;
 	
 	vec3 halfway = normalize(lightDir+viewRay);
 	float halfDot = max(0,dot(surfacePos, halfway));
 	
 	float rayDot =  max(0,dot(reflectedRay, viewRay));
 	
-	float specularTerm = pow(max(0, halfDot), 2.0f);
+	float specularTerm = pow(max(0, halfDot), 2.0f)*specularCo;
 	vec4 specular = vColor * vec4(lightColor, 1) * specularTerm; 
 	FragColor = ambient + diffuse + specular;
 }
