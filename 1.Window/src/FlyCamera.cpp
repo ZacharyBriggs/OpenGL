@@ -50,35 +50,36 @@ void FlyCamera::update(GLFWwindow* window,float dt)
 
 void FlyCamera::rotate(float radians, glm::vec3 axis)
 {
-	auto cos = glm::cos(radians);
-	auto sin = glm::sin(radians);
-	glm::vec3 x_Axis = glm::vec3(1, 0, 0);
-	glm::vec3 y_Axis = glm::vec3(0, 1, 0);
-	glm::vec3 z_Axis = glm::vec3(0, 0, 1);
-	//X rotation
-	if (axis == x_Axis)
+	auto cosine = cos(radians);
+	auto sine = sin(radians);
+	auto newMat = glm::mat4(1);
+	//if x rotate
+	if (axis == glm::vec3(1, 0, 0))
 	{
-		y_Axis = glm::vec3(0, cos, sin);
-		z_Axis = glm::vec3(0, -sin, cos);
+		//rotating along x means x doesn't change
+		newMat[1].y = cosine;
+		newMat[1].z = sine;
+		newMat[2].y = -sin(radians);
+		newMat[2].z = cosine;
+
 	}
-	//Y rotation
-	else if (axis == y_Axis)
+	//if y rotate
+	if (axis == glm::vec3(0, 1, 0))
 	{
-		x_Axis = glm::vec3(cos, 0, -sin);
-		z_Axis = glm::vec3(sin, 0, cos);
+		newMat[0].x = cosine;
+		newMat[0].z = -sin(radians);
+		newMat[2].x = sine;
+		newMat[2].z = cosine;
 	}
-	//Z rotation
-	else if (axis == z_Axis)
+	//if z rotate
+	if (axis == glm::vec3(0, 0, 1))
 	{
-		x_Axis = glm::vec3(cos, sin, 0);
-		y_Axis = glm::vec3(-sin, cos, 0);
+		newMat[0].x = cosine;
+		newMat[0].y = -sin(radians);
+		newMat[1].x = sine;
+		newMat[1].y = cosine;
 	}
-	auto rotation = glm::mat4(
-		x_Axis.x, y_Axis.x, z_Axis.x, 0,
-		x_Axis.y, y_Axis.y, z_Axis.y, 0,
-		x_Axis.z, y_Axis.z, z_Axis.z, 0,
-		0,		  0,		0,		  1);
-	viewTransform *= rotation;
+	viewTransform *= newMat;
 }
 
 void FlyCamera::setSpeed(float value)

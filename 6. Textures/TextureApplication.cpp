@@ -58,7 +58,6 @@ void TextureApplication::startup()
 	indices = { 0,1,2,2,3,0 };
 	mesh->initialize(indices, vertices);
 }
-
 void TextureApplication::shutdown()
 {
 }

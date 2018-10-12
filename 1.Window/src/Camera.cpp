@@ -20,11 +20,6 @@ void Camera::update(float dt)
 {
 }
 
-void Camera::setPerspective(float fov, float aspectRatio, float near, float far)
-{
-	projectionTransform = glm::perspective(fov, aspectRatio, near, far);
-}
-
 void Camera::setLookAt(glm::vec3 from, glm::vec3 to, glm::vec3 up)
 {
 	//from is the camera's position

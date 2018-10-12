@@ -50,14 +50,10 @@ void LightingApplication::startup()
 	std::vector<unsigned int> indices = Geometry::genSphereIndices(np, nm);
 	std::vector<Vertex> vertices;
 	std::vector<glm::vec2> daUV;
-	float V = 0;
-	for (int i = 0; i<2; i++)
+	for (int x = 0; x <= nm; x++)
 	{
-		for (int j = 0; j < spherePoints.size()/2; j++)
-		{
-			daUV.push_back(glm::vec2((float)j/(spherePoints.size()/2),V));
-		}
-		V++;
+		for (int y = 0; y < np; y++)
+			daUV.push_back(glm::vec2((x / (float)np), y / ((float)nm - 1)));
 	}
 	for (int i = 0; i < spherePoints.size(); i++)
 	{

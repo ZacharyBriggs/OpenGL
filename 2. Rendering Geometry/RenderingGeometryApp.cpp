@@ -22,8 +22,8 @@ void RenderingGeometryApp::startup()
 	mesh = new MeshRenderer();
 	defaultShader = new Shader();
 	geo = new Geometry();
-	defaultShader->load("d.vertex", 0);
-	defaultShader->load("b.fragment", 1);
+	defaultShader->load("shaders/d.vertex", 0);
+	defaultShader->load("shaders/b.fragment", 1);
 	defaultShader->attach();
 
 	/*std::vector<Vertex> vertices = genPlane(5);

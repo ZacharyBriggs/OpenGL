@@ -57,17 +57,22 @@ int MeshRenderer::create_buffers()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), m_indices.data(), GL_STATIC_DRAW);;
 
-	//Enable the vertex array of the index at 0
+	//Enable a pointer for the position
+	//the arguments are the following: Where the variable is in the AttribArray, the number of values of the variable, 
+	//the type of the values in the variable, if they values are normalized, the size of the class the variable is in, 
+	//and how many bytes the variable is from the start of the AttribArray
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 
-	//Enable the vertex array of the index at 1
+	//Enable a pointer for the color
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(glm::vec4));
 
+	//Enable a pointer for the normal
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)(sizeof(glm::vec4)*2));
 
+	//Enable a pointer for the UV
 	glEnableVertexAttribArray(3);
 	glVertexAttribPointer(3, 2, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)(sizeof(glm::vec4)*3));
 
