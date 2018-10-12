@@ -30,7 +30,7 @@ void main()
 	
 	float rayDot =  max(0,dot(reflectedRay, viewRay));
 	
-	float specularTerm = pow(max(0, halfDot), 2.0f)*specularCo;
+	float specularTerm = pow(max(0, halfDot), 6.0f)*specularCo;
 	vec4 specular = vColor * vec4(lightColor, 1) * specularTerm; 
 	FragColor = ambient + diffuse + specular;
 }

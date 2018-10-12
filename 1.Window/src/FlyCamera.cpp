@@ -77,8 +77,7 @@ void FlyCamera::rotate(float radians, glm::vec3 axis)
 		x_Axis.x, y_Axis.x, z_Axis.x, 0,
 		x_Axis.y, y_Axis.y, z_Axis.y, 0,
 		x_Axis.z, y_Axis.z, z_Axis.z, 0,
-		0, 0, 0, 1
-	);
+		0,		  0,		0,		  1);
 	viewTransform *= rotation;
 }
 

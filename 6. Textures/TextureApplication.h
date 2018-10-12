@@ -15,7 +15,6 @@ public:
 	~TextureApplication();
 	MeshRenderer* mesh;
 	Shader* defaultShader;
-	Geometry* geo;
 	DirectionalLight* DaLight;
 	Texture* tex;
 	glm::mat4 m_model;

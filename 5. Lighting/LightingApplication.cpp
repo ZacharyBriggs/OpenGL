@@ -35,7 +35,7 @@ void LightingApplication::startup()
 	DaLight->direction = glm::vec3(0, -1, 0);
 	DaLight->pos = glm::vec3(0, -1, 0);
 	defaultShader->load("shaders/d.vertex", 0);
-	defaultShader->load("shaders/b.fragment", 1);
+	defaultShader->load("shaders/blin.fragment", 1);
 	defaultShader->attach();
 
 	/*std::vector<Vertex> vertices = genPlane(5);

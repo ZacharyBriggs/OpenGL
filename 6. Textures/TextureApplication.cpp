@@ -37,19 +37,15 @@ void TextureApplication::startup()
 	int nm = 21;
 	int np = 20;
 	pos = glm::vec3(0, 0, 0);
-	std::vector<glm::vec4> points = geo->genHalfCircle(np, 5);
-	std::vector<glm::vec4> spherePoints = geo->genSphere(points, nm, pos);
-	std::vector<unsigned int> indices = geo->genSphereIndices(np, nm);
+	std::vector<glm::vec4> points = Geometry::genHalfCircle(np, 5);
+	std::vector<glm::vec4> spherePoints = Geometry::genSphere(points, nm, pos);
+	std::vector<unsigned int> indices = Geometry::genSphereIndices(np, nm);
 	std::vector<Vertex> vertices;
 	std::vector<glm::vec2> daUV;
-	float V = 0;
-	for (int i = 0; i <= nm; i++)
+	for (int x = 0; x <= nm; x++)
 	{
-		for (int j = 0; j < np; j++)
-		{
-			daUV.push_back(glm::vec2((i / (float)np), j / ((float)nm - 1)));
-		}
-		V++;
+		for (int y = 0; y < np; y++)
+			daUV.push_back(glm::vec2((x / (float)np), y / ((float)nm - 1)));
 	}
 	for (int i = 0; i < spherePoints.size(); i++)
 	{
@@ -58,6 +54,8 @@ void TextureApplication::startup()
 	DaLight->pos = glm::vec3(pos.x, pos.y, pos.z);
 	DaLight->direction = glm::vec3(0, -3, 0);
 	glm::vec4 material = vertices[0].color;
+	vertices = Geometry::genPlane(10);
+	indices = { 0,1,2,2,3,0 };
 	mesh->initialize(indices, vertices);
 }
 
@@ -78,9 +76,9 @@ void TextureApplication::update(float dt)
 	m_model = glm::mat4(1);
 	int nm = 12;
 	int np = 11;
-	std::vector<glm::vec4> points3 = geo->genHalfCircle(np, 2);
-	std::vector<glm::vec4> spherePoints3 = geo->genSphere(points3, nm, pos);
-	std::vector<unsigned int> indices3 = geo->genSphereIndices(np, nm);
+	std::vector<glm::vec4> points3 = Geometry::genHalfCircle(np, 2);
+	std::vector<glm::vec4> spherePoints3 = Geometry::genSphere(points3, nm, pos);
+	std::vector<unsigned int> indices3 = Geometry::genSphereIndices(np, nm);
 	std::vector<Vertex> vertices3;
 	for (glm::vec4 point : spherePoints3)
 	{
