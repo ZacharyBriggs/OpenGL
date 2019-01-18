@@ -11,6 +11,7 @@ Application::~Application()
 {
 }
 void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+
 void Application::run(const char * title, unsigned int width, unsigned int height, bool fullscreen)
 {
 	
@@ -41,10 +42,13 @@ void Application::run(const char * title, unsigned int width, unsigned int heigh
 		//	printf("you done did it");
 		ImGui_ImplGlfwGL3_NewFrame();
 
-
-		std::thread UpdateThread(update,glfwTime);
-		std::thread DrawThread(draw);
+		auto updateLambda = [&](double time) { update(time); };
+		auto drawLambda = [&]() {draw(); };
+		//std::thread UpdateThread(updateLambda,glfwTime);
+		//std::thread DrawThread(drawLambda);
 		
+		updateLambda(glfwTime);
+		drawLambda();
 		ImGui::Render();
 		glfwSwapBuffers(m_window);//swap the buffer for this window
 
@@ -56,7 +60,8 @@ void Application::run(const char * title, unsigned int width, unsigned int heigh
 
 		if (m_gameover)
 			shutdown();
-
+		//UpdateThread.join();
+		//DrawThread.join();
 	}
 
 	shutdown();
@@ -65,3 +70,5 @@ void Application::run(const char * title, unsigned int width, unsigned int heigh
 void Application::clearScreen()
 {
 }
+
+

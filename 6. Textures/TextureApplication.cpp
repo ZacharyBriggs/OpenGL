@@ -6,6 +6,7 @@
 #include "Texture.h"
 #include "DirectionalLight.h"
 #include <glm/glm/ext.hpp>
+#include "imgui.h"
 #include "gl_core_4_4.h"
 #include <GLFW/glfw3.h>
 #include <mutex>
@@ -25,6 +26,18 @@ TextureApplication::~TextureApplication()
 {
 }
 
+void FPMSCounter()
+{
+	double currentTime = glfwGetTime();
+	nbFrames++;
+	if (currentTime - prevTime >= 1.0)
+	{
+		
+		ImGui::Text("%f ms / frame\n", 1000.0 / double(nbFrames));
+		nbFrames = 0;
+		prevTime += 1.0;
+	}
+}
 void TextureApplication::startup()
 {
 	mesh = new MeshRenderer();
@@ -36,14 +49,16 @@ void TextureApplication::startup()
 	DaLight->pos = glm::vec3(0, -1, 0);
 	defaultShader->load("shaders/texVert.vertex", 0);
 	defaultShader->load("shaders/texFrag.fragment", 1);
-	defaultShader->attach();
+	defaultShader->attach(); 
+
+	std::vector<Vertex> vertices;
+	std::vector<unsigned int> indices;
 	int nm = 21;
 	int np = 20;
 	pos = glm::vec3(0, 0, 0);
 	std::vector<glm::vec4> points = Geometry::genHalfCircle(np, 5);
 	std::vector<glm::vec4> spherePoints = Geometry::genSphere(points, nm, pos);
-	std::vector<unsigned int> indices = Geometry::genSphereIndices(np, nm);
-	std::vector<Vertex> vertices;
+	indices = Geometry::genSphereIndices(np, nm);
 	std::vector<glm::vec2> daUV;
 	for (int x = 0; x <= nm; x++)
 	{
@@ -70,15 +85,9 @@ void TextureApplication::shutdown()
 
 void TextureApplication::update(float dt)
 {
-	
-	double currentTime = glfwGetTime();
-	nbFrames++;
-	if (currentTime - prevTime >= 1.0)
-	{
-		printf("%f ms/frame\n", 1000.0 / double(nbFrames));
-		nbFrames = 0;
-		prevTime += 1.0;
-	}
+	ImGui::BeginChild("##scrolling");
+	std::thread FPMSThread(FPMSCounter);
+	ImGui::End();
 	rt += dt;
 	glm::mat4 trans;
 	float angle = glm::cos(rt*0.5f) * dt;
@@ -113,7 +122,7 @@ void TextureApplication::update(float dt)
 	Mutex.unlock();
 	glfwSetWindowUserPointer(m_window, this);
 	glfwSetKeyCallback(m_window, key_callback);
-
+	FPMSThread.join();
 }
 
 void TextureApplication::draw()
