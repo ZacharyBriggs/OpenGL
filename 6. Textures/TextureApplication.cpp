@@ -8,11 +8,14 @@
 #include <glm/glm/ext.hpp>
 #include "gl_core_4_4.h"
 #include <GLFW/glfw3.h>
+#include <mutex>
 
 float aC = 1;
 float dC = 1;
 float sC = 1;
 float rt = 0;
+double prevTime = glfwGetTime();
+int nbFrames = 0;
 glm::vec3 pos = glm::vec3(0);
 TextureApplication::TextureApplication()
 {
@@ -51,8 +54,11 @@ void TextureApplication::startup()
 	{
 		vertices.push_back(Vertex(spherePoints[i], glm::vec4(1, 1, 1, 1), daUV[i]));
 	}
+	static std::mutex Mutex;
+	Mutex.lock();
 	DaLight->pos = glm::vec3(pos.x, pos.y, pos.z);
 	DaLight->direction = glm::vec3(0, -3, 0);
+	Mutex.unlock();
 	glm::vec4 material = vertices[0].color;
 	vertices = Geometry::genPlane(10);
 	indices = { 0,1,2,2,3,0 };
@@ -64,6 +70,15 @@ void TextureApplication::shutdown()
 
 void TextureApplication::update(float dt)
 {
+	
+	double currentTime = glfwGetTime();
+	nbFrames++;
+	if (currentTime - prevTime >= 1.0)
+	{
+		printf("%f ms/frame\n", 1000.0 / double(nbFrames));
+		nbFrames = 0;
+		prevTime += 1.0;
+	}
 	rt += dt;
 	glm::mat4 trans;
 	float angle = glm::cos(rt*0.5f) * dt;
@@ -92,7 +107,10 @@ void TextureApplication::update(float dt)
 		pos.x += 0.1;
 	if (glfwGetKey(m_window, GLFW_KEY_LEFT))
 		pos.x -= 0.1;
+	static std::mutex Mutex;
+	Mutex.lock();
 	DaLight->pos = glm::vec3(pos.x, pos.y, pos.z);
+	Mutex.unlock();
 	glfwSetWindowUserPointer(m_window, this);
 	glfwSetKeyCallback(m_window, key_callback);
 

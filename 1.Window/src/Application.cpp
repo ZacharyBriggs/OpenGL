@@ -4,6 +4,7 @@
 #include <iostream>
 #include "imgui.h"
 #include <imgui_impl_glfw_gl3.h>
+#include <thread>
 
 Application::Application() :m_window(nullptr), m_gameover(false), m_clearColor{ 1,1,1,1 }, m_runningTime(0){}
 Application::~Application()
@@ -12,6 +13,7 @@ Application::~Application()
 void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
 void Application::run(const char * title, unsigned int width, unsigned int height, bool fullscreen)
 {
+	
 	float prevTime = glfwGetTime();
 	glfwInit();
 	m_window = glfwCreateWindow(720, 720, title, NULL, NULL);
@@ -40,9 +42,9 @@ void Application::run(const char * title, unsigned int width, unsigned int heigh
 		ImGui_ImplGlfwGL3_NewFrame();
 
 
-		update(glfwTime);
-
-		draw();
+		std::thread UpdateThread(update,glfwTime);
+		std::thread DrawThread(draw);
+		
 		ImGui::Render();
 		glfwSwapBuffers(m_window);//swap the buffer for this window
 
