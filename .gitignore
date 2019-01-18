@@ -192,6 +192,5 @@ bootstrap/Bootstrap.vcxproj.user
 root/Practice-Cpp.VC.db
 /root/dep/ReadFromFile.bsc
 *.html
-*.png
 *.jpeg
 *.jpg
