@@ -11,16 +11,16 @@ void GUIApplication::startup()
 	m_mesh = new MeshRenderer();
 	m_defaultShader = new Shader();
 	m_transform = new Transform();
-	Vertex a = Vertex(glm::vec4(-10, 10, 0, 1), glm::vec4(1, 0, 0, 1));
-	Vertex b = Vertex(glm::vec4(10, 10, 0, 1), glm::vec4(0, 1, 0, 1));
-	Vertex c = Vertex(glm::vec4(10, -10, 0, 1), glm::vec4(0, 0, 1, 1));
-	Vertex d = Vertex(glm::vec4(-10, -10, 0, 1), glm::vec4(0, 0, 0, 1));
+	Vertex a = Vertex(glm::vec4(-10, 10, 0, 1), glm::vec4(1, 0, 0, 1), glm::vec2(0,0));
+	Vertex b = Vertex(glm::vec4(10, 10, 0, 1), glm::vec4(0, 1, 0, 1), glm::vec2(0, 0));
+	Vertex c = Vertex(glm::vec4(10, -10, 0, 1), glm::vec4(0, 0, 1, 1), glm::vec2(0, 0));
+	Vertex d = Vertex(glm::vec4(-10, -10, 0, 1), glm::vec4(0, 0, 0, 1), glm::vec2(0, 0));
 	std::vector<Vertex> vertices = { a,b,c,d };
 	std::vector<unsigned int> indices = { 0 ,1,2,2,3,0 };
 	m_transform->SetModel(glm::mat4(1));
 	m_mesh->initialize(indices, vertices);
-	m_defaultShader->load("d.dik", 0);
-	m_defaultShader->load("b.but", 1);
+	m_defaultShader->load("d.vertex", 0);
+	m_defaultShader->load("b.fragment", 1);
 	m_defaultShader->attach();
 }
 

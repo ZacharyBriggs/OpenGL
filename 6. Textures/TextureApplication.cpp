@@ -40,17 +40,16 @@ void FPMSCounter()
 }
 void TextureApplication::startup()
 {
-	mesh = new MeshRenderer();
-	defaultShader = new Shader();
 	DaLight = new DirectionalLight();
-	tex = new Texture("textures/moon.png");
 	DaLight->color = glm::vec4(0, .5, 0, 1);
 	DaLight->direction = glm::vec3(0, 1, 0);
 	DaLight->pos = glm::vec3(0, -1, 0);
+	mesh = new MeshRenderer();
+	defaultShader = new Shader();
+	tex = new Texture("textures/moon.png");
 	defaultShader->load("shaders/texVert.vertex", 0);
 	defaultShader->load("shaders/texFrag.fragment", 1);
-	defaultShader->attach(); 
-
+	defaultShader->attach();
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	int nm = 21;
@@ -66,14 +65,10 @@ void TextureApplication::startup()
 			daUV.push_back(glm::vec2((x / (float)np), y / ((float)nm - 1)));
 	}
 	for (int i = 0; i < spherePoints.size(); i++)
-	{
 		vertices.push_back(Vertex(spherePoints[i], glm::vec4(1, 1, 1, 1), daUV[i]));
-	}
-	static std::mutex Mutex;
-	Mutex.lock();
+
 	DaLight->pos = glm::vec3(pos.x, pos.y, pos.z);
 	DaLight->direction = glm::vec3(0, -3, 0);
-	Mutex.unlock();
 	glm::vec4 material = vertices[0].color;
 	vertices = Geometry::genPlane(10);
 	indices = { 0,1,2,2,3,0 };
@@ -116,10 +111,7 @@ void TextureApplication::update(float dt)
 		pos.x += 0.1;
 	if (glfwGetKey(m_window, GLFW_KEY_LEFT))
 		pos.x -= 0.1;
-	static std::mutex Mutex;
-	Mutex.lock();
 	DaLight->pos = glm::vec3(pos.x, pos.y, pos.z);
-	Mutex.unlock();
 	glfwSetWindowUserPointer(m_window, this);
 	glfwSetKeyCallback(m_window, key_callback);
 	FPMSThread.join();
